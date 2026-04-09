@@ -12,17 +12,22 @@ const navItems = [
   { icon: User,       label: 'Profile',    path: '/profile',   action: null },
 ];
 
+import { useScrollDirection } from '@/hooks/useScrollDirection';
+
 export function BottomNav() {
   const { openCategorySheet } = useUIStore();
   const location = useLocation();
+  const scrollDirection = useScrollDirection();
+
+  const isVisible = scrollDirection !== 'down';
 
   return (
     <div className="fixed bottom-4 left-0 right-0 z-50 flex justify-center px-4 md:hidden">
       <motion.nav
-        initial={{ y: 80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5, type: 'spring', stiffness: 160, damping: 20 }}
-        className="flex items-center gap-1 bg-secondary/90 backdrop-blur-xl border border-white/10 p-1.5 rounded-2xl shadow-2xl shadow-black/30"
+        initial={{ y: 0 }}
+        animate={{ y: isVisible ? 0 : 100, opacity: isVisible ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+        className="flex items-center gap-1 bg-secondary/95 backdrop-blur-xl border border-white/10 p-1.5 rounded-2xl shadow-2xl shadow-black/40"
       >
         {navItems.map((item) => {
           const isActive = item.path

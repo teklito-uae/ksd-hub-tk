@@ -1,13 +1,12 @@
-import { categories, stats, testimonials, featuredSections, dummyBusinesses, bucketLists, weeklyPoll } from '@/lib/dummy-data';
+import { categories, stats, featuredSections, dummyBusinesses, bucketLists } from '@/lib/dummy-data';
 import { CategoryList } from '@/components/CategoryList';
 import { BusinessCarousel } from '@/components/BusinessCarousel';
 import { HeroCarousel } from '@/components/HeroCarousel';
 import { Button } from '@/components/ui/button';
-import { Search, CheckCircle2, Star, ArrowRight } from 'lucide-react';
+import { Search, ArrowRight, TrendingUp, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 
 const fadeIn = {
@@ -16,6 +15,27 @@ const fadeIn = {
   viewport: { once: true },
   transition: { duration: 0.5 },
 };
+
+const SEO_KEYWORDS = [
+  "Top Restaurant in Uppala",
+  "Budget Friendly Hotels in Bekal",
+  "Best Real Estate in Kanhangad",
+  "Leading Builders in Kasaragod",
+  "Top Schools in Nileshwar",
+  "Modern Cafes in Mogral",
+  "Verified Doctors in Vidyanagar",
+  "Authentic Biryani in Kasaragod Town",
+  "Hardware Stores in Kanhangad",
+  "Luxury Resorts in Cheruvathur",
+  "Mobile Repair in Mogral",
+  "Bridal Wear in Kasaragod Hub",
+  "Tours and Travels in Bekal",
+  "Home Decor in Uppala Junction",
+  "Supermarkets in Kanhangad South",
+  "Dental Clinics in Kasaragod Town",
+  "Automobile Service in Nileshwar",
+  "Textiles and Sarees in Kumbla"
+];
 
 export function LandingPage() {
   return (
@@ -47,7 +67,7 @@ export function LandingPage() {
       </section>
 
       {/* search pill offset spacer */}
-      <div className="mt-16" />
+      <div className="mt-12 md:mt-16" />
 
       {/* ───── 2. STATS STRIP ───── */}
       <section className="container mx-auto px-4 max-w-5xl">
@@ -69,14 +89,14 @@ export function LandingPage() {
       </section>
 
       {/* ───── 3. CATEGORIES ───── */}
-      <section className="container mx-auto px-4 max-w-7xl mt-20">
-        <div className="flex justify-between items-end mb-8">
+      <section className="container mx-auto px-4 max-w-7xl mt-12 md:mt-20">
+        <div className="flex justify-between items-end mb-6 md:mb-8">
           <motion.div {...fadeIn}>
-            <h2 className="text-2xl font-bold text-secondary">Browse by Category</h2>
-            <p className="text-muted-foreground text-xs mt-1">Discover businesses across 50+ curated sectors</p>
+            <h2 className="text-xl md:text-2xl font-bold text-secondary">Browse by Category</h2>
+            <p className="text-muted-foreground text-[10px] md:text-xs mt-1">Discover businesses across 50+ curated sectors</p>
           </motion.div>
-          <Button variant="ghost" size="sm" className="text-primary font-semibold text-xs group hidden md:flex">
-            All Categories <ArrowRight className="ml-1 size-3.5 group-hover:translate-x-0.5 transition-transform" />
+          <Button variant="ghost" size="sm" className="text-primary font-semibold text-xs group flex">
+            All <ArrowRight className="ml-1 size-3.5 group-hover:translate-x-0.5 transition-transform" />
           </Button>
         </div>
         <CategoryList categories={categories} />
@@ -84,7 +104,7 @@ export function LandingPage() {
 
 
       {/* ───── 5. FEATURED PARTNERS CAROUSEL ───── */}
-      <section className="container mx-auto px-4 max-w-7xl mt-20">
+      <section className="container mx-auto px-4 max-w-7xl mt-12 md:mt-20">
         <BusinessCarousel
           title="Featured Partners"
           subtitle="Verified and top-rated businesses across Kasaragod"
@@ -96,14 +116,14 @@ export function LandingPage() {
       {featuredSections.map((section, sIdx) => (
         <section
           key={section.id}
-          className={`mt-16 py-12 ${sIdx % 2 !== 0 ? 'bg-gray-50 border-y border-gray-100' : ''}`}
+          className={`mt-10 md:mt-16 py-8 md:py-12 ${sIdx % 2 !== 0 ? 'bg-gray-50 border-y border-gray-100' : ''}`}
         >
           <div className="container mx-auto px-4 max-w-7xl">
             <BusinessCarousel
               title={section.label}
               subtitle={`Popular ${section.label.toLowerCase()} businesses near you`}
               businesses={[
-                ...section.businesses,
+                ...section.businesses.slice(0, 3),
                 ...dummyBusinesses.slice(0, 3),
               ].slice(0, 6)}
             />
@@ -112,260 +132,112 @@ export function LandingPage() {
       ))}
 
       {/* ───── NEW: BUCKET LIST CURATION ───── */}
-      <section className="container mx-auto px-4 max-w-7xl mt-24">
-        <div className="flex flex-col items-center text-center mb-12">
-          <Badge variant="outline" className="border-primary/30 text-primary text-[10px] mb-3 font-bold uppercase tracking-wider">Insider Guides</Badge>
-          <h2 className="text-3xl font-black text-secondary tracking-tight">The KSD Bucket List</h2>
-          <p className="text-muted-foreground text-xs mt-2 max-w-md">Expertly curated experiences designed to help you rediscover your own neighborhood.</p>
+      <section className="container mx-auto px-4 max-w-7xl mt-12 md:mt-24">
+        <div className="flex flex-col items-center text-center mb-8 md:mb-12">
+          <Badge variant="outline" className="border-primary/30 text-primary text-[9px] md:text-[10px] mb-3 font-bold uppercase tracking-wider">Insider Guides</Badge>
+          <h2 className="text-2xl md:text-3xl font-black text-secondary tracking-tight">The KSD Bucket List</h2>
+          <p className="text-muted-foreground text-[10px] md:text-xs mt-2 max-w-md">Expertly curated experiences designed to help you rediscover your own neighborhood.</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
            {bucketLists.map((list) => (
               <motion.div 
                 key={list.id}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 className="group cursor-pointer"
               >
-                <div className="relative aspect-[4/3] rounded-3xl overflow-hidden mb-4">
+                <div className="relative aspect-[4/3] rounded-2xl md:rounded-3xl overflow-hidden mb-3">
                   <img 
                     src={list.image} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                     alt={list.title} 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent p-6 flex flex-col justify-end">
-                     <Badge className="w-fit bg-primary text-white border-none text-[9px] font-bold mb-2">
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent p-4 md:p-6 flex flex-col justify-end">
+                     <Badge className="w-fit bg-primary text-white border-none text-[8px] md:text-[9px] font-bold mb-2">
                         {list.businessCount} PLACES
                      </Badge>
-                     <h3 className="text-xl font-bold text-white leading-tight">{list.title}</h3>
+                     <h3 className="text-lg md:text-xl font-bold text-white leading-tight">{list.title}</h3>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground line-clamp-2 px-1">{list.description}</p>
+                <p className="text-[10px] md:text-xs text-muted-foreground line-clamp-2 px-1">{list.description}</p>
               </motion.div>
            ))}
         </div>
       </section>
 
-      {/* ───── 7. COMMUNITY PULSE (REVIEWS) ───── */}
-      <section className="mt-24 pt-16 pb-20 bg-gray-50/50 overflow-hidden">
-        <div className="container mx-auto px-4 max-w-7xl mb-12">
-           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <motion.div {...fadeIn}>
-                <Badge className="bg-primary/10 text-primary border-none text-[10px] font-bold px-3 py-1 mb-3 uppercase tracking-widest">Global Feedback</Badge>
-                <h2 className="text-3xl font-black text-secondary tracking-tight">Kasaragod is Talking.</h2>
-                <p className="text-muted-foreground text-sm mt-1">Real stories from real locals using the hub every day.</p>
-              </motion.div>
-              <Button variant="outline" size="sm" className="rounded-xl font-bold text-xs border-gray-200">
-                Write a Review
-              </Button>
-           </div>
+      {/* ───── 7. REFINED SEO KEYWORDS (NO CARD) ───── */}
+      <section className="container mx-auto px-4 max-w-7xl mt-20 md:mt-28">
+        <div className="flex items-center gap-3 mb-6 md:mb-8">
+          <div className="size-8 md:size-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <TrendingUp className="size-4 md:size-5" />
+          </div>
+          <div>
+            <h2 className="text-lg md:text-xl font-black text-secondary tracking-tight">Most Searched in Kasaragod</h2>
+            <p className="text-muted-foreground text-[10px] md:text-xs font-medium">Quick links to high-intent local services and popular areas</p>
+          </div>
         </div>
-
-        <div className="flex flex-col gap-10 w-full mask-fade-edges py-10">
-          {/* Row 1: Left to Right */}
-          <div className="flex gap-6 animate-marquee py-4">
-            {[...testimonials, ...testimonials].map((t, i) => (
-              <Card key={i} className="min-w-[320px] rounded-[2rem] border-none shadow-sm bg-white p-6 flex flex-col justify-between hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex gap-0.5">
-                      {[...Array(5)].map((_, j) => (
-                        <Star key={j} className="size-3 fill-primary text-primary" />
-                      ))}
-                    </div>
-                    <Badge variant="outline" className="text-[8px] border-green-100 text-green-600 font-bold bg-green-50/50">VERIFIED</Badge>
-                  </div>
-                  <p className="text-xs text-secondary/80 leading-relaxed italic mb-4">"{t.content}"</p>
-                </div>
-                <div className="flex items-center gap-3 pt-4 border-t border-gray-50">
-                  <div className="size-10 rounded-2xl overflow-hidden shadow-sm">
-                    <img src={t.avatar} alt="" className="w-full h-full object-cover" />
-                  </div>
-                  <div>
-                     <p className="text-xs font-bold text-secondary">{t.name}</p>
-                     <p className="text-[10px] text-primary font-medium">Review for {dummyBusinesses[i % dummyBusinesses.length].name}</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          {/* Row 2: Right to Left */}
-          <div className="flex gap-6 animate-marquee-reverse py-4">
-            {[...testimonials, ...testimonials].reverse().map((t, i) => (
-              <Card key={i} className="min-w-[320px] rounded-[2rem] border-none shadow-sm bg-white p-6 flex flex-col justify-between hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex gap-0.5">
-                      {[...Array(5)].map((_, j) => (
-                        <Star key={j} className="size-3 fill-primary text-primary" />
-                      ))}
-                    </div>
-                    <Badge variant="outline" className="text-[8px] border-blue-100 text-blue-600 font-bold bg-blue-50/50">TOP USER</Badge>
-                  </div>
-                  <p className="text-xs text-secondary/80 leading-relaxed italic mb-4">"{t.content}"</p>
-                </div>
-                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                  <div className="size-10 rounded-2xl overflow-hidden shadow-sm">
-                    <img src={t.avatar} alt="" className="w-full h-full object-cover" />
-                  </div>
-                  <div>
-                     <p className="text-xs font-bold text-secondary">{t.name}</p>
-                     <p className="text-[10px] text-primary font-medium">Verified Customer</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+        
+        <div className="flex flex-wrap gap-2 md:gap-2.5">
+          {SEO_KEYWORDS.map((keyword, idx) => (
+            <Badge 
+              key={idx}
+              variant="outline"
+              className="rounded-full px-3.5 py-1.5 border-gray-100 bg-white hover:bg-white hover:border-primary hover:text-primary transition-all cursor-pointer font-medium text-[10px] md:text-[11px] text-secondary/70 whitespace-nowrap shadow-sm"
+            >
+              {keyword}
+            </Badge>
+          ))}
         </div>
       </section>
 
-      {/* ───── 8. DUAL-PATH CTA (ECOSYSTEM) ───── */}
-      <section className="container mx-auto px-4 max-w-7xl mt-24 mb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Path 1: For Users */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="group relative bg-[#F8FAFC] rounded-[3rem] p-10 md:p-14 overflow-hidden border border-gray-100"
-          >
-             <div className="absolute top-0 right-0 p-10 opacity-[0.03] group-hover:scale-110 transition-transform duration-700">
-                <Search className="size-48" />
-             </div>
-             <div className="relative z-10 h-full flex flex-col">
-                <Badge variant="outline" className="w-fit border-secondary/20 text-secondary text-[10px] font-bold mb-6">FOR THE COMMUNITY</Badge>
-                <h2 className="text-3xl md:text-4xl font-black text-secondary leading-tight mb-4">
-                  Find the soul of <br />
-                  <span className="text-primary italic">Kasaragod Hub.</span>
-                </h2>
-                <p className="text-secondary/60 text-sm max-w-xs mb-10 leading-relaxed">
-                  Discover over 1,200+ local services, shops, and hidden gems in your neighborhood.
-                </p>
-                <div className="mt-auto">
-                  <Link to="/directory">
-                    <Button size="lg" className="rounded-2xl px-10 h-14 font-black shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
-                      Start Exploring <ArrowRight className="ml-2 size-5" />
-                    </Button>
-                  </Link>
-                </div>
-             </div>
-          </motion.div>
+      {/* ───── 8. COMPACT UNIFIED CTA ───── */}
+      <section className="container mx-auto px-4 max-w-7xl mt-16 md:mt-24 mb-16 md:mb-24">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="bg-secondary rounded-2xl md:rounded-[3rem] p-8 md:p-14 relative overflow-hidden group shadow-2xl shadow-secondary/10"
+        >
+          {/* Decorative Rings */}
+          <div className="absolute top-0 right-0 size-80 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+          <div className="absolute bottom-0 left-0 size-48 bg-primary/5 rounded-full -ml-24 -mb-24 blur-2xl" />
+          
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="space-y-4 md:space-y-5 text-center lg:text-left">
+              <Badge className="bg-primary/20 text-primary border-none font-bold text-[9px] px-3 py-1 uppercase tracking-widest inline-flex">Kasaragod Hub</Badge>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+                Empowering the digital pulse of Kasaragod district.
+              </h2>
+              <p className="text-gray-400 text-[11px] md:text-sm leading-relaxed max-w-lg mx-auto lg:mx-0 font-medium">
+                Find local spots or grow your business reaching 10k+ local residents. We've built the ultimate platform for you.
+              </p>
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 md:gap-6 pt-2">
+                 <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-white/70">
+                    <CheckCircle2 className="size-3.5 text-primary" /> 1,200+ Listings
+                 </div>
+                 <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-white/70">
+                    <CheckCircle2 className="size-3.5 text-primary" /> Verified Reviews
+                 </div>
+              </div>
+            </div>
 
-          {/* Path 2: For Owners */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="group relative bg-secondary rounded-[3rem] p-10 md:p-14 overflow-hidden shadow-2xl shadow-secondary/20"
-          >
-             <div className="absolute bottom-0 right-0 p-10 opacity-10 group-hover:rotate-12 transition-transform duration-700">
-                <Star className="size-48 text-primary" />
-             </div>
-             <div className="relative z-10 h-full flex flex-col">
-                <Badge className="w-fit bg-primary text-white border-none text-[10px] font-bold mb-6">FOR BUSINESS OWNERS</Badge>
-                <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-4">
-                  Scale your brand <br />
-                  <span className="text-primary underline underline-offset-8 decoration-4">exponentially.</span>
-                </h2>
-                <p className="text-white/50 text-sm max-w-xs mb-10 leading-relaxed">
-                  Join the district's largest digital network. Get verified, get leads, get growing.
-                </p>
-                <div className="mt-auto">
-                  <Link to="/for-businesses">
-                    <Button size="lg" variant="secondary" className="bg-white text-secondary hover:bg-gray-100 rounded-2xl px-10 h-14 font-black shadow-xl hover:scale-105 active:scale-95 transition-all">
-                      List Your Business <ArrowRight className="ml-2 size-5" />
-                    </Button>
-                  </Link>
-                </div>
-             </div>
-          </motion.div>
-        </div>
+            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-center gap-3 md:gap-4 lg:justify-end">
+               <Link to="/directory" className="w-full sm:w-auto">
+                 <Button size="lg" className="h-12 md:h-14 px-8 md:px-10 rounded-xl md:rounded-2xl bg-primary text-white font-black hover:scale-105 active:scale-95 transition-all w-full text-sm">
+                   Start Exploring <ArrowRight className="ml-2 size-4" />
+                 </Button>
+               </Link>
+               <Link to="/for-businesses" className="w-full sm:w-auto">
+                 <Button size="lg" variant="outline" className="h-12 md:h-14 px-8 md:px-10 rounded-xl md:rounded-2xl border-white/20 text-white hover:bg-white/10 font-bold backdrop-blur-sm w-full text-sm">
+                   List Your Business
+                 </Button>
+               </Link>
+            </div>
+          </div>
+        </motion.div>
       </section>
-
-      {/* ───── 9. FOOTER ───── */}
-      <footer className="mt-20 bg-secondary text-white">
-        <div className="container mx-auto px-4 max-w-5xl">
-          {/* Main footer grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-b border-white/10">
-            {/* Brand */}
-            <div className="col-span-2 md:col-span-1">
-              <div className="text-lg font-black tracking-tight mb-3">
-                Kasaragod<span className="text-primary italic">Hub</span>
-              </div>
-              <p className="text-xs text-gray-400 leading-relaxed mb-5">
-                Northern Kerala's most trusted business discovery platform. Connecting communities, enabling commerce.
-              </p>
-              <div className="flex gap-3">
-                {['FB', 'IG', 'WA'].map(s => (
-                  <div key={s} className="size-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold text-gray-400 hover:bg-primary hover:border-primary hover:text-white cursor-pointer transition-all">
-                    {s}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Explore */}
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Explore</p>
-              <ul className="space-y-2.5">
-                {['Business Directory', 'Real Estate', 'Food & Dining', 'Healthcare', 'Tourism'].map(l => (
-                  <li key={l}>
-                    <a href="#" className="text-xs text-gray-400 hover:text-white transition-colors">{l}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* For Businesses */}
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">For Businesses</p>
-              <ul className="space-y-2.5">
-                {[['Register Now', '/for-businesses'], ['How It Works', '/for-businesses'], ['Pricing', '/for-businesses'], ['Success Stories', '/for-businesses'], ['FAQs', '#']].map(([l, href]) => (
-                  <li key={l}>
-                    <Link to={href} className="text-xs text-gray-400 hover:text-white transition-colors">{l}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact + Newsletter */}
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Stay Updated</p>
-              <p className="text-xs text-gray-400 mb-3 leading-relaxed">
-                Get weekly updates on new businesses and local deals.
-              </p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="flex-1 bg-white/8 border border-white/10 rounded-lg text-xs px-3 py-2 text-white placeholder:text-gray-500 focus:outline-none focus:border-primary min-w-0"
-                />
-                <button className="bg-primary text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-orange-600 transition-colors shrink-0">
-                  Go
-                </button>
-              </div>
-              <div className="mt-5 space-y-1.5">
-                <p className="text-[10px] text-gray-500">📍 Kasaragod, Kerala – 671121</p>
-                <p className="text-[10px] text-gray-500">📧 hello@kasaragodhub.in</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom bar */}
-          <div className="py-5 flex flex-col md:flex-row items-center justify-between gap-2">
-            <p className="text-[10px] text-gray-500">
-              &copy; 2026 Kasaragod Hub · Built by <span className="text-primary font-semibold">Archi Studio</span>
-            </p>
-            <div className="flex gap-4">
-              {['Privacy Policy', 'Terms of Use', 'Sitemap'].map(l => (
-                <a key={l} href="#" className="text-[10px] text-gray-500 hover:text-gray-300 transition-colors">{l}</a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

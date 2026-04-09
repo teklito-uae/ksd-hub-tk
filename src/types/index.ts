@@ -24,6 +24,8 @@ export interface Business {
   images?: string[];
   status: BusinessStatus;
   is_featured: boolean;
+  is_verified?: boolean;
+  price_range?: 1 | 2 | 3 | 4;
   latitude?: number;
   longitude?: number;
   rating?: number;

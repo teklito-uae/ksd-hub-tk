@@ -6,10 +6,12 @@ import { DirectoryPage } from '@/pages/DirectoryPage';
 import { BusinessProfilePage } from '@/pages/BusinessProfilePage';
 import { RegisterPage } from '@/pages/RegisterPage';
 import { Layout } from '@/components/Layout';
+import ScrollToTop from '@/components/ScrollToTop';
 
 function App() {
   return (
     <>
+      <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<LandingPage />} />

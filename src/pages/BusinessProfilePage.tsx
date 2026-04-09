@@ -51,21 +51,13 @@ export function BusinessProfilePage() {
 
   return (
     <div className="bg-gray-50/50 min-h-screen pb-32 md:pb-20">
-      {/* ── TOP NAV (Mobile) ── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-transparent transition-colors">
-        <button
-          onClick={() => navigate(-1)}
-          className="size-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xl"
-        >
-          <ChevronLeft className="size-6" />
-        </button>
-        <button className="size-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xl">
+      {/* Gallery Section */}
+      <section className="relative h-[300px] md:h-[450px] w-full bg-secondary overflow-hidden">
+        {/* Share Button (Mobile Only, Non-fixed) */}
+        <button className="md:hidden absolute top-4 right-4 z-20 size-10 rounded-xl bg-black/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white active:scale-95 transition-transform">
           <Share2 className="size-5" />
         </button>
-      </div>
 
-      {/* ── GALLERY SECTION ── */}
-      <section className="relative h-[300px] md:h-[450px] w-full bg-secondary overflow-hidden">
         <div ref={emblaRef} className="h-full overflow-hidden">
           <div className="flex h-full">
             {(business.images && business.images.length > 0 ? business.images : [
