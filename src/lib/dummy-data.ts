@@ -69,6 +69,7 @@ export const dummyBusinesses: Business[] = [
     review_count: 342,
     latitude: 12.4998,
     longitude: 74.9892,
+    expert_ids: ['p1'],
     created_at: new Date().toISOString(),
   },
   {
@@ -230,6 +231,7 @@ export const dummyBusinesses: Business[] = [
     price_range: 3,
     rating: 4.9,
     review_count: 156,
+    expert_ids: ['p4'],
     created_at: new Date().toISOString(),
   },
   {
@@ -441,6 +443,116 @@ export const dummyBusinesses: Business[] = [
     review_count: 1240,
     created_at: new Date().toISOString(),
   },
+];
+
+export const proCategories = [
+  { id: 'tech', label: 'Tech & Digital', icon: 'Code' },
+  { id: 'construction', label: 'Builders & Labs', icon: 'HardHat' },
+  { id: 'health', label: 'Health Experts', icon: 'Stethoscope' },
+  { id: 'events', label: 'Events & Media', icon: 'Camera' },
+  { id: 'services', label: 'Home Services', icon: 'Wrench' },
+  { id: 'tution', label: 'Tutors & Coaching', icon: 'BookOpen' }
+];
+
+export interface Professional {
+  id: string;
+  slug: string;
+  name: string;
+  profession: string;
+  category: string;
+  location: string;
+  bio: string;
+  skills: string[];
+  experience: string;
+  projects: number;
+  avatar: string;
+  rating: number;
+  is_verified: boolean;
+  whatsapp: string;
+  portfolio: string[];
+  business_ids?: string[];
+}
+
+export const dummyPros: Professional[] = [
+  {
+    id: 'p1',
+    slug: 'ahmed-sahal',
+    name: 'Ahmed Sahal',
+    profession: 'Full Stack Developer',
+    category: 'tech',
+    location: 'Kasaragod Town',
+    bio: 'Experienced developer specializing in React and Laravel. Helping local businesses go digital.',
+    skills: ['React', 'Laravel', 'Tailwind', 'App Design'],
+    experience: '5+ Years',
+    projects: 42,
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
+    rating: 4.9,
+    is_verified: true,
+    whatsapp: '919876543210',
+    business_ids: ['1'],
+    portfolio: [
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400',
+      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400'
+    ]
+  },
+  {
+    id: 'p2',
+    slug: 'fathima-zahra',
+    name: 'Fathima Zahra',
+    profession: 'Creative Designer',
+    category: 'events',
+    location: 'Kanhangad',
+    bio: 'Branding expert and wedding invitation specialist. Making your special moments more beautiful.',
+    skills: ['Branding', 'Photoshop', 'UI Design', 'Illustration'],
+    experience: '3 Years',
+    projects: 120,
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop',
+    rating: 4.8,
+    is_verified: true,
+    whatsapp: '919876543211',
+    portfolio: [
+      'https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?w=400',
+      'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400'
+    ]
+  },
+  {
+    id: 'p3',
+    slug: 'ibrahim-khalil',
+    name: 'Ibrahim Khalil',
+    profession: 'Master Electrician',
+    category: 'services',
+    location: 'Uppala',
+    bio: 'Government certified electrician. Reliable home wiring and maintenance services.',
+    skills: ['Wiring', 'AC Repair', 'Solar Install', 'Maintenance'],
+    experience: '12 Years',
+    projects: 450,
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop',
+    rating: 5.0,
+    is_verified: true,
+    whatsapp: '919876543212',
+    portfolio: [
+      'https://images.unsplash.com/photo-1558211583-d28f630b9b24?w=400',
+      'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400'
+    ]
+  },
+  {
+    id: 'p4',
+    slug: 'arjun-das',
+    name: 'Arjun Das',
+    profession: 'Civil Engineer',
+    category: 'construction',
+    location: 'Nileshwar',
+    bio: 'Expert in modern residential plans and structural stability reports.',
+    skills: ['Plan Design', 'Structural Eng', 'Estimation', 'Vastu'],
+    experience: '8 Years',
+    projects: 28,
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop',
+    rating: 4.7,
+    is_verified: false,
+    whatsapp: '919876543213',
+    business_ids: ['9'],
+    portfolio: []
+  }
 ];
 
 export const stats = [

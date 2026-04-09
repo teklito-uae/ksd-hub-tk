@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { dummyBusinesses, categories } from '@/lib/dummy-data';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { dummyBusinesses, categories, dummyPros, Professional } from '@/lib/dummy-data';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -48,6 +48,7 @@ export function BusinessProfilePage() {
   }
 
   const category = categories.find(c => c.id === business.category_id);
+  const experts = (business.expert_ids || []).map(id => dummyPros.find(p => p.id === id)).filter(Boolean) as Professional[];
 
   return (
     <div className="bg-gray-50/50 min-h-screen pb-32 md:pb-20">
@@ -177,6 +178,39 @@ export function BusinessProfilePage() {
                 ))}
               </div>
             </div>
+
+            {/* Experts Spotlight */}
+            {experts.length > 0 && (
+              <div className="space-y-4 pt-4">
+                <div className="flex items-center justify-between px-2">
+                  <h3 className="text-lg font-bold text-secondary">Verified Experts at this Location</h3>
+                  <Badge variant="outline" className="text-[9px] font-black uppercase text-primary border-primary/20 bg-primary/5">Clubbed Masters</Badge>
+                </div>
+                <div className="flex overflow-x-auto scrollbar-hide gap-4 pb-2 px-1">
+                   {experts.map((pro) => (
+                      <Link key={pro.id} to={`/expert/${pro.slug}`} className="min-w-[200px] block group">
+                         <Card className="p-4 rounded-2xl border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all bg-white relative overflow-hidden">
+                            <div className="flex items-center gap-3">
+                               <div className="size-10 rounded-xl overflow-hidden border border-gray-100 shrink-0">
+                                  <img src={pro.avatar} alt={pro.name} className="w-full h-full object-cover" />
+                               </div>
+                               <div className="min-w-0">
+                                  <p className="text-xs font-bold text-secondary truncate group-hover:text-primary transition-colors">{pro.name}</p>
+                                  <p className="text-[10px] text-muted-foreground truncate">{pro.profession}</p>
+                               </div>
+                            </div>
+                            <div className="mt-3 pt-3 border-t border-gray-50 flex items-center justify-between text-[10px] font-bold">
+                               <span className="text-primary">{pro.experience} Exp</span>
+                               <div className="flex items-center gap-1 text-secondary">
+                                  <Star className="size-2.5 fill-primary text-primary" /> {pro.rating}
+                               </div>
+                            </div>
+                         </Card>
+                      </Link>
+                   ))}
+                </div>
+              </div>
+            )}
 
             {/* Photo Gallery Grid */}
             <div className="space-y-4 pt-4">

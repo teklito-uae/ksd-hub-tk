@@ -1,9 +1,10 @@
-import { categories, stats, featuredSections, dummyBusinesses, bucketLists } from '@/lib/dummy-data';
+import { categories, stats, featuredSections, dummyBusinesses, bucketLists, dummyPros } from '@/lib/dummy-data';
 import { CategoryList } from '@/components/CategoryList';
 import { BusinessCarousel } from '@/components/BusinessCarousel';
 import { HeroCarousel } from '@/components/HeroCarousel';
 import { Button } from '@/components/ui/button';
-import { Search, ArrowRight, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Search, ArrowRight, TrendingUp, CheckCircle2, Sparkles, Zap, Star, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -100,6 +101,64 @@ export function LandingPage() {
           </Button>
         </div>
         <CategoryList categories={categories} />
+      </section>
+
+      {/* ───── 4. EXPERT SPOTLIGHT (REFINED) ───── */}
+      <section className="container mx-auto px-4 max-w-7xl mt-24">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+           <div className="space-y-4">
+              <Badge className="bg-primary/10 text-primary border-none font-bold text-[10px] px-4 py-1.5 uppercase tracking-widest">Master Network</Badge>
+              <h2 className="text-3xl md:text-4xl font-black text-secondary tracking-tight">Hire Verified Talent.</h2>
+              <p className="text-muted-foreground text-sm md:text-base max-w-lg">Direct access to the district's top professionals, verified by our moderation team.</p>
+           </div>
+           <Link to="/experts" className="text-sm font-bold text-primary hover:underline flex items-center gap-2">
+              Browse All Masters <ArrowRight className="size-4" />
+           </Link>
+        </div>
+
+        <div className="flex overflow-x-auto scrollbar-hide gap-6 pb-4 -mx-4 px-4 snap-x">
+           {dummyPros.map((pro, idx) => (
+             <motion.div 
+               key={pro.id}
+               initial={{ opacity: 0, x: 20 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               transition={{ delay: idx * 0.1 }}
+               viewport={{ once: true }}
+               className="min-w-[300px] md:min-w-[340px] snap-center shrink-0"
+             >
+                <Link to={`/expert/${pro.slug}`}>
+                   <Card className="p-6 rounded-2xl border-gray-100 bg-white hover:border-primary/20 hover:shadow-lg transition-all group relative overflow-hidden h-full flex flex-col">
+                      {/* Top Section: Avatar & Basic Info */}
+                      <div className="flex items-start gap-4 mb-6">
+                         <div className="size-16 rounded-2xl overflow-hidden shadow-sm border border-gray-100 shrink-0">
+                            <img src={pro.avatar} className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all" alt={pro.name} />
+                         </div>
+                         <div className="flex-1 min-w-0">
+                            <h4 className="text-lg font-black text-secondary group-hover:text-primary transition-colors leading-tight mb-1 truncate">{pro.name}</h4>
+                            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider truncate">{pro.profession}</p>
+                            <div className="flex items-center gap-1.5 mt-2">
+                               <div className="flex items-center gap-1 bg-primary/5 px-2 py-0.5 rounded text-[10px] font-black text-primary">
+                                  <Star className="size-3 fill-current" /> {pro.rating}
+                               </div>
+                               <span className="text-[10px] font-bold text-muted-foreground">• {pro.experience}</span>
+                            </div>
+                         </div>
+                      </div>
+
+                      {/* Middle Section: Brief Bio/Trust */}
+                      <p className="text-xs text-secondary/70 leading-relaxed line-clamp-3 font-medium italic border-l-2 border-primary/20 pl-4 mb-4 flex-1">
+                         {pro.bio}
+                      </p>
+
+                      {/* Verified Badge Overlay (Subtle) */}
+                      <div className="absolute top-4 right-4 text-blue-500 opacity-20 group-hover:opacity-100 transition-opacity">
+                         <ShieldCheck className="size-5" />
+                      </div>
+                   </Card>
+                </Link>
+             </motion.div>
+           ))}
+        </div>
       </section>
 
 

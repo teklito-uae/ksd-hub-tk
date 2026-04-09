@@ -1,4 +1,4 @@
-import { Home, Search, LayoutGrid, Award, User } from 'lucide-react';
+import { Home, Search, LayoutGrid, Briefcase, User } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -8,7 +8,7 @@ const navItems = [
   { icon: Home,       label: 'Home',       path: '/',          action: null },
   { icon: LayoutGrid, label: 'Categories', path: null,         action: 'categories' },
   { icon: Search,     label: 'Search',     path: '/directory', action: null },
-  { icon: Award,      label: 'Featured',   path: '/featured',  action: null },
+  { icon: Briefcase,  label: 'Masters',    path: '/experts',   action: null },
   { icon: User,       label: 'Profile',    path: '/profile',   action: null },
 ];
 

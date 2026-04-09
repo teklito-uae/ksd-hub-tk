@@ -30,6 +30,7 @@ export interface Business {
   longitude?: number;
   rating?: number;
   review_count?: number;
+  expert_ids?: string[];
   created_at: string;
 }
 
