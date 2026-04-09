@@ -1,4 +1,4 @@
-import { categories, stats, testimonials, featuredSections, dummyBusinesses } from '@/lib/dummy-data';
+import { categories, stats, testimonials, featuredSections, dummyBusinesses, bucketLists, weeklyPoll } from '@/lib/dummy-data';
 import { CategoryList } from '@/components/CategoryList';
 import { BusinessCarousel } from '@/components/BusinessCarousel';
 import { HeroCarousel } from '@/components/HeroCarousel';
@@ -104,7 +104,6 @@ export function LandingPage() {
               subtitle={`Popular ${section.label.toLowerCase()} businesses near you`}
               businesses={[
                 ...section.businesses,
-                // Pad with all businesses if section has few entries for demo
                 ...dummyBusinesses.slice(0, 3),
               ].slice(0, 6)}
             />
@@ -112,78 +111,177 @@ export function LandingPage() {
         </section>
       ))}
 
-      {/* ───── 7. TESTIMONIALS ───── */}
-      <section className="mt-20 bg-gray-50 border-y border-gray-100 py-16">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <motion.div {...fadeIn} className="text-center mb-10">
-            <Badge variant="outline" className="border-primary/30 text-primary text-[10px] mb-3 font-bold uppercase tracking-wider">
-              Community Reviews
-            </Badge>
-            <h2 className="text-2xl md:text-3xl font-bold text-secondary">What People Say</h2>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {testimonials.map((t, i) => (
-              <motion.div
-                key={t.name}
-                initial={{ opacity: 0, y: 14 }}
+      {/* ───── NEW: BUCKET LIST CURATION ───── */}
+      <section className="container mx-auto px-4 max-w-7xl mt-24">
+        <div className="flex flex-col items-center text-center mb-12">
+          <Badge variant="outline" className="border-primary/30 text-primary text-[10px] mb-3 font-bold uppercase tracking-wider">Insider Guides</Badge>
+          <h2 className="text-3xl font-black text-secondary tracking-tight">The KSD Bucket List</h2>
+          <p className="text-muted-foreground text-xs mt-2 max-w-md">Expertly curated experiences designed to help you rediscover your own neighborhood.</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+           {bucketLists.map((list) => (
+              <motion.div 
+                key={list.id}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                className="group cursor-pointer"
               >
-                <Card className="rounded-2xl border border-gray-100 shadow-sm bg-white h-full hover:shadow-md transition-shadow">
-                  <CardContent className="p-5 flex flex-col h-full">
-                    <div className="flex gap-0.5 mb-3">
+                <div className="relative aspect-[4/3] rounded-3xl overflow-hidden mb-4">
+                  <img 
+                    src={list.image} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                    alt={list.title} 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent p-6 flex flex-col justify-end">
+                     <Badge className="w-fit bg-primary text-white border-none text-[9px] font-bold mb-2">
+                        {list.businessCount} PLACES
+                     </Badge>
+                     <h3 className="text-xl font-bold text-white leading-tight">{list.title}</h3>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground line-clamp-2 px-1">{list.description}</p>
+              </motion.div>
+           ))}
+        </div>
+      </section>
+
+      {/* ───── 7. COMMUNITY PULSE (REVIEWS) ───── */}
+      <section className="mt-24 pt-16 pb-20 bg-gray-50/50 overflow-hidden">
+        <div className="container mx-auto px-4 max-w-7xl mb-12">
+           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <motion.div {...fadeIn}>
+                <Badge className="bg-primary/10 text-primary border-none text-[10px] font-bold px-3 py-1 mb-3 uppercase tracking-widest">Global Feedback</Badge>
+                <h2 className="text-3xl font-black text-secondary tracking-tight">Kasaragod is Talking.</h2>
+                <p className="text-muted-foreground text-sm mt-1">Real stories from real locals using the hub every day.</p>
+              </motion.div>
+              <Button variant="outline" size="sm" className="rounded-xl font-bold text-xs border-gray-200">
+                Write a Review
+              </Button>
+           </div>
+        </div>
+
+        <div className="flex flex-col gap-10 w-full mask-fade-edges py-10">
+          {/* Row 1: Left to Right */}
+          <div className="flex gap-6 animate-marquee py-4">
+            {[...testimonials, ...testimonials].map((t, i) => (
+              <Card key={i} className="min-w-[320px] rounded-[2rem] border-none shadow-sm bg-white p-6 flex flex-col justify-between hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex gap-0.5">
                       {[...Array(5)].map((_, j) => (
-                        <Star key={j} className="size-3.5 fill-primary text-primary" />
+                        <Star key={j} className="size-3 fill-primary text-primary" />
                       ))}
                     </div>
-                    <p className="text-xs text-secondary/70 leading-relaxed mb-5 flex-1 italic">
-                      "{t.content}"
-                    </p>
-                    <div className="flex items-center gap-2.5 pt-3 border-t border-gray-100">
-                      <img src={t.avatar} alt={t.name} className="size-9 rounded-xl object-cover" />
-                      <div>
-                        <p className="text-xs font-bold text-secondary">{t.name}</p>
-                        <p className="text-[10px] text-muted-foreground">{t.role}</p>
-                      </div>
+                    <Badge variant="outline" className="text-[8px] border-green-100 text-green-600 font-bold bg-green-50/50">VERIFIED</Badge>
+                  </div>
+                  <p className="text-xs text-secondary/80 leading-relaxed italic mb-4">"{t.content}"</p>
+                </div>
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-50">
+                  <div className="size-10 rounded-2xl overflow-hidden shadow-sm">
+                    <img src={t.avatar} alt="" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                     <p className="text-xs font-bold text-secondary">{t.name}</p>
+                     <p className="text-[10px] text-primary font-medium">Review for {dummyBusinesses[i % dummyBusinesses.length].name}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          {/* Row 2: Right to Left */}
+          <div className="flex gap-6 animate-marquee-reverse py-4">
+            {[...testimonials, ...testimonials].reverse().map((t, i) => (
+              <Card key={i} className="min-w-[320px] rounded-[2rem] border-none shadow-sm bg-white p-6 flex flex-col justify-between hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, j) => (
+                        <Star key={j} className="size-3 fill-primary text-primary" />
+                      ))}
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                    <Badge variant="outline" className="text-[8px] border-blue-100 text-blue-600 font-bold bg-blue-50/50">TOP USER</Badge>
+                  </div>
+                  <p className="text-xs text-secondary/80 leading-relaxed italic mb-4">"{t.content}"</p>
+                </div>
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                  <div className="size-10 rounded-2xl overflow-hidden shadow-sm">
+                    <img src={t.avatar} alt="" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                     <p className="text-xs font-bold text-secondary">{t.name}</p>
+                     <p className="text-[10px] text-primary font-medium">Verified Customer</p>
+                  </div>
+                </div>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ───── 8. CTA ───── */}
-      <section className="container mx-auto px-4 max-w-5xl mt-20">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-primary rounded-3xl px-8 md:px-16 py-12 text-center text-white relative overflow-hidden shadow-[0_16px_48px_-8px_rgba(255,122,0,0.35)]"
-        >
-          <div className="absolute -top-20 -right-20 size-60 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-20 -left-20 size-60 bg-secondary/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10">
-            <h2 className="text-2xl md:text-3xl font-bold mb-2 leading-snug">
-              Ready to grow your Kasaragod business?
-            </h2>
-            <p className="text-white/70 text-sm mb-7 max-w-md mx-auto">
-              Join 1,200+ business owners already benefiting from our platform. Always free.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-              <Link to="/for-businesses">
-                <Button className="bg-white text-primary hover:bg-gray-50 rounded-xl px-8 h-11 font-bold shadow-lg text-sm transition-transform hover:scale-105 active:scale-95">
-                  Get Listed — It's Free
-                </Button>
-              </Link>
-              <span className="text-white/50 text-xs flex items-center gap-1">
-                <CheckCircle2 className="size-3.5 text-white/60" /> No credit card required
-              </span>
-            </div>
-          </div>
-        </motion.div>
+      {/* ───── 8. DUAL-PATH CTA (ECOSYSTEM) ───── */}
+      <section className="container mx-auto px-4 max-w-7xl mt-24 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Path 1: For Users */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="group relative bg-[#F8FAFC] rounded-[3rem] p-10 md:p-14 overflow-hidden border border-gray-100"
+          >
+             <div className="absolute top-0 right-0 p-10 opacity-[0.03] group-hover:scale-110 transition-transform duration-700">
+                <Search className="size-48" />
+             </div>
+             <div className="relative z-10 h-full flex flex-col">
+                <Badge variant="outline" className="w-fit border-secondary/20 text-secondary text-[10px] font-bold mb-6">FOR THE COMMUNITY</Badge>
+                <h2 className="text-3xl md:text-4xl font-black text-secondary leading-tight mb-4">
+                  Find the soul of <br />
+                  <span className="text-primary italic">Kasaragod Hub.</span>
+                </h2>
+                <p className="text-secondary/60 text-sm max-w-xs mb-10 leading-relaxed">
+                  Discover over 1,200+ local services, shops, and hidden gems in your neighborhood.
+                </p>
+                <div className="mt-auto">
+                  <Link to="/directory">
+                    <Button size="lg" className="rounded-2xl px-10 h-14 font-black shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                      Start Exploring <ArrowRight className="ml-2 size-5" />
+                    </Button>
+                  </Link>
+                </div>
+             </div>
+          </motion.div>
+
+          {/* Path 2: For Owners */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="group relative bg-secondary rounded-[3rem] p-10 md:p-14 overflow-hidden shadow-2xl shadow-secondary/20"
+          >
+             <div className="absolute bottom-0 right-0 p-10 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+                <Star className="size-48 text-primary" />
+             </div>
+             <div className="relative z-10 h-full flex flex-col">
+                <Badge className="w-fit bg-primary text-white border-none text-[10px] font-bold mb-6">FOR BUSINESS OWNERS</Badge>
+                <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-4">
+                  Scale your brand <br />
+                  <span className="text-primary underline underline-offset-8 decoration-4">exponentially.</span>
+                </h2>
+                <p className="text-white/50 text-sm max-w-xs mb-10 leading-relaxed">
+                  Join the district's largest digital network. Get verified, get leads, get growing.
+                </p>
+                <div className="mt-auto">
+                  <Link to="/for-businesses">
+                    <Button size="lg" variant="secondary" className="bg-white text-secondary hover:bg-gray-100 rounded-2xl px-10 h-14 font-black shadow-xl hover:scale-105 active:scale-95 transition-all">
+                      List Your Business <ArrowRight className="ml-2 size-5" />
+                    </Button>
+                  </Link>
+                </div>
+             </div>
+          </motion.div>
+        </div>
       </section>
 
       {/* ───── 9. FOOTER ───── */}

@@ -1,17 +1,18 @@
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { BottomNav } from './BottomNav';
 import { CategorySheet } from './CategorySheet';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import { HubBot } from './HubBot';
+import { CommunityPoll } from './CommunityPoll';
 
 export function Layout() {
   const location = useLocation();
 
   return (
     <div className="relative min-h-screen bg-background">
-      {/* Desktop Header Placeholder */}
+      {/* Desktop Header */}
       <header className="hidden md:flex fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 h-14 items-center px-8 shadow-sm">
-        <NavLink to="/" className="font-black text-lg text-secondary tracking-tight">
+        <NavLink to="/" className="font-black text-lg text-secondary tracking-tight border-none outline-none">
           Kasaragod<span className="text-primary italic">Hub</span>
         </NavLink>
         <nav className="ml-auto flex items-center gap-6">
@@ -48,6 +49,8 @@ export function Layout() {
 
       <BottomNav />
       <CategorySheet />
+      <HubBot />
+      <CommunityPoll />
     </div>
   );
 }

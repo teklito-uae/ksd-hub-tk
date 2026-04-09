@@ -13,6 +13,40 @@ export const categories: Category[] = [
   { id: '10', name: 'Construction', slug: 'construction', icon: 'HardHat' },
 ];
 
+export const weeklyPoll = {
+  question: "Best Seafront Dining Spot?",
+  options: [
+    { label: "Ocean Pearl", votes: 1240 },
+    { label: "Bekal Waves", votes: 890 },
+    { label: "Coastal Bites", votes: 450 }
+  ],
+  totalVotes: 2580
+};
+
+export const bucketLists = [
+  {
+    id: '1',
+    title: 'The Bekal Tourist Guide',
+    description: 'A perfect 24-hour itinerary around the ancient fort and its hidden scenic spots.',
+    image: '/assets/guides/bekal-fort.png',
+    businessCount: 5
+  },
+  {
+    id: '2',
+    title: 'Wedding Destination Gems',
+    description: 'Expertly curated list of premium venues and high-end wedding caterers in Kasaragod.',
+    image: '/assets/guides/wedding-gems.png',
+    businessCount: 8
+  },
+  {
+    id: '3',
+    title: 'Hidden Cafe Gems',
+    description: 'Discover the most sophisticated coffee spots and minimalist tropical cafes.',
+    image: '/assets/guides/cafe-gems.png',
+    businessCount: 4
+  }
+];
+
 export const dummyBusinesses: Business[] = [
   {
     id: '1',
