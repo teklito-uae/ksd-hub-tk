@@ -146,7 +146,7 @@ export function ForBusinessesPage() {
       {/* ── BENEFITS GRID ── */}
       <section className="container mx-auto px-4 max-w-5xl mt-20">
         <motion.div {...fadeIn} className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-secondary">Why List on Kasaragod Hub?</h2>
+          <h2 className="text-2xl md:text-3xl font-black text-secondary tracking-tight">Why List on Kasaragod Hub?</h2>
           <p className="text-muted-foreground text-sm mt-2 max-w-lg mx-auto">
             Everything you need to establish a strong local digital presence — in one free profile.
           </p>
@@ -173,10 +173,10 @@ export function ForBusinessesPage() {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section className="mt-20 bg-gray-50 border-y border-gray-100 py-16">
+      <section className="mt-12 md:mt-20 bg-gray-50 border-y border-gray-100 py-12 md:py-16">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div {...fadeIn} className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-secondary">Up & Running in 3 Steps</h2>
+            <h2 className="text-2xl md:text-3xl font-black text-secondary tracking-tight">Up & Running in 3 Steps</h2>
             <p className="text-muted-foreground text-sm mt-2">No tech skills needed. Your profile goes live in minutes.</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
@@ -204,12 +204,12 @@ export function ForBusinessesPage() {
       </section>
 
       {/* ── WHAT'S INCLUDED (Pricing) ── */}
-      <section className="container mx-auto px-4 max-w-4xl mt-20">
+      <section className="container mx-auto px-4 max-w-4xl mt-10 md:mt-16">
         <motion.div {...fadeIn} className="text-center mb-10">
           <Badge variant="outline" className="border-primary/30 text-primary text-[10px] font-bold uppercase tracking-wider mb-3">
             Always Free
           </Badge>
-          <h2 className="text-2xl md:text-3xl font-bold text-secondary">Everything You Need, Included</h2>
+          <h2 className="text-2xl md:text-3xl font-black text-secondary tracking-tight">Everything You Need, Included</h2>
           <p className="text-muted-foreground text-sm mt-2">No hidden fees. No premium tiers. No commissions on leads.</p>
         </motion.div>
 
@@ -253,10 +253,10 @@ export function ForBusinessesPage() {
       </section>
 
       {/* ── TESTIMONIALS ── */}
-      <section className="mt-20 bg-gray-50 border-y border-gray-100 py-16">
+      <section className="mt-12 md:mt-20 bg-gray-50 border-y border-gray-100 py-12 md:py-16">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.div {...fadeIn} className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-secondary">Business Owners Love It</h2>
+            <h2 className="text-2xl md:text-3xl font-black text-secondary tracking-tight">Business Owners Love It</h2>
             <p className="text-muted-foreground text-sm mt-2">Real results from real businesses in Kasaragod.</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -290,7 +290,7 @@ export function ForBusinessesPage() {
       </section>
 
       {/* ── BOTTOM CTA ── */}
-      <section className="container mx-auto px-4 max-w-5xl mt-28">
+      <section className="container mx-auto px-4 max-w-5xl mt-10 md:mt-20 mb-10 md:mb-16">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -313,7 +313,7 @@ export function ForBusinessesPage() {
                 <span className="text-[10px] font-bold uppercase tracking-wider text-white/90">Join the movement</span>
               </div>
 
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
+              <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight mb-4 leading-tight">
                 Start Growing <br /> Your Business <br /> <span className="text-primary">Today.</span>
               </h2>
 

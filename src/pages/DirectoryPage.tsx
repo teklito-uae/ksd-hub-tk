@@ -84,9 +84,9 @@ export function DirectoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFCFE] pb-20 md:pb-0">
+    <div className="min-h-screen bg-background pb-20 md:pb-0">
       {/* ── BREADCRUMBS & COMPACT HEADER ── */}
-      <section className="bg-white border-b border-gray-100 pt-4 md:pt-6 pb-4 md:pb-6 mt-14 md:mt-16 lg:mt-6">
+      <section className="bg-white border-b border-gray-100 pt-4 md:pt-6 pb-4 md:pb-6 lg:mt-6">
         <div className="container mx-auto px-4 max-w-[1600px]">
           <div className="flex items-center gap-2 text-[9px] md:text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3 md:mb-4 overflow-x-auto whitespace-nowrap scrollbar-hide">
             <Link to="/" className="hover:text-primary transition-colors flex items-center gap-1">
@@ -104,11 +104,11 @@ export function DirectoryPage() {
           
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
             <div className="flex items-center gap-3 md:gap-4">
-               <Link to="/" className="lg:hidden p-2 rounded-xl bg-gray-50 text-secondary active:scale-95 transition-transform">
+               <Link to="/" className="lg:hidden p-2 rounded-xl bg-muted text-secondary active:scale-95 transition-transform">
                   <ArrowLeft className="size-4" />
                </Link>
                <div>
-                <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-secondary tracking-tight">
+                <h1 className="text-lg md:text-2xl lg:text-3xl font-black text-secondary tracking-tight">
                   {activeCategory ? activeCategory.name : "Directory"}
                 </h1>
                 <p className="text-[10px] md:text-xs text-muted-foreground font-medium opacity-80">
@@ -165,7 +165,7 @@ export function DirectoryPage() {
                 <DrawerContent className="p-6 rounded-t-[2.5rem] outline-none">
                    <div className="max-h-[80vh] overflow-y-auto py-4 scrollbar-hide">
                       <div className="mb-6 flex justify-between items-center px-1">
-                        <h2 className="text-xl font-bold">Refine Results</h2>
+                        <h2 className="text-xl font-black text-secondary tracking-tight">Refine Results</h2>
                         <Badge variant="outline" className="border-primary text-primary font-bold">
                           {filteredBusinesses.length} items
                         </Badge>

@@ -8,6 +8,8 @@ import { Footer } from './Footer';
 import { PlusCircle, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+import { GlobalSearch } from './GlobalSearch';
+
 export function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -15,47 +17,89 @@ export function Layout() {
 
   return (
     <div className="relative min-h-screen bg-background">
-      {/* Universal Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 h-14 items-center flex px-4 md:px-8 shadow-sm">
-        <div className="flex items-center gap-2 mr-auto">
-          {isSubPage && (
-            <button 
-              onClick={() => navigate(-1)} 
-              className="md:hidden p-2 -ml-2 text-secondary active:scale-95 transition-transform"
-            >
-              <ChevronLeft className="size-5" />
-            </button>
-          )}
-          <NavLink to="/" className="font-black text-lg text-secondary tracking-tight border-none outline-none">
-            Kasaragod<span className="text-primary italic">Hub</span>
-          </NavLink>
-        </div>
-        
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6">
-          <NavLink to="/" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-primary' : 'text-secondary hover:text-primary'}`}>Home</NavLink>
-          <NavLink to="/directory" className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? 'text-primary' : 'text-secondary hover:text-primary'}`}>Directory</NavLink>
-          <NavLink
-            to="/for-businesses"
-            className={({ isActive }) =>
-              `text-sm font-semibold transition-all px-4 py-2 rounded-xl ${
-                isActive
-                  ? 'bg-primary text-white'
-                  : 'bg-primary text-white hover:bg-orange-600'
-              }`
-            }
-          >
-            For Businesses
-          </NavLink>
-        </nav>
+      {/* Universal Header — full-width bar, centered content */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 h-14 shadow-sm">
+        <div className="container mx-auto px-4 max-w-7xl h-full flex items-center gap-4">
 
-        {/* Mobile Action (e.g. Profile or Suggest) */}
-        <div className="md:hidden flex items-center gap-2">
-           <NavLink to="/register" className="size-9 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+          {/* Logo + back button */}
+          <div className="flex items-center gap-1 shrink-0">
+            {isSubPage && (
+              <button
+                onClick={() => navigate(-1)}
+                className="md:hidden p-2 -ml-2 text-secondary active:scale-95 transition-transform"
+              >
+                <ChevronLeft className="size-5" />
+              </button>
+            )}
+            <NavLink to="/" className="font-black text-lg text-secondary tracking-tight border-none outline-none">
+              Kasaragod<span className="text-primary italic">Hub</span>
+            </NavLink>
+          </div>
+
+          {/* Global Search — grows to fill center space */}
+          <div className="flex-1 flex items-center justify-end md:justify-start max-w-xs md:max-w-sm">
+            <GlobalSearch />
+          </div>
+
+          {/* Desktop Nav — pushed to the right */}
+          <nav className="hidden md:flex items-center gap-5 ml-auto shrink-0">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `text-sm font-bold transition-colors ${isActive ? 'text-primary' : 'text-secondary hover:text-primary'}`
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/directory"
+              className={({ isActive }) =>
+                `text-sm font-bold transition-colors ${isActive ? 'text-primary' : 'text-secondary hover:text-primary'}`
+              }
+            >
+              Directory
+            </NavLink>
+            <NavLink
+              to="/experts"
+              className={({ isActive }) =>
+                `text-sm font-bold transition-colors ${isActive ? 'text-primary' : 'text-secondary hover:text-primary'}`
+              }
+            >
+              Experts
+            </NavLink>
+            <NavLink
+              to="/for-businesses"
+              className={({ isActive }) =>
+                `text-sm font-bold transition-all px-4 py-1.5 rounded-xl ${
+                  isActive
+                    ? 'bg-secondary text-white'
+                    : 'bg-primary text-white hover:bg-orange-600'
+                }`
+              }
+            >
+              For Businesses
+            </NavLink>
+          </nav>
+
+          {/* Mobile — register shortcut */}
+          <div className="md:hidden ml-auto flex items-center gap-3">
+            <NavLink
+              to="/login"
+              className="text-[10px] font-black uppercase tracking-widest text-secondary"
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/register"
+              className="size-9 bg-primary text-white rounded-xl flex items-center justify-center active:scale-95 transition-transform"
+            >
               <PlusCircle className="size-5" />
-           </NavLink>
+            </NavLink>
+          </div>
+
         </div>
       </header>
+
 
       <main className="pt-14 md:pt-16 pb-24 md:pb-0">
         <AnimatePresence mode="wait">

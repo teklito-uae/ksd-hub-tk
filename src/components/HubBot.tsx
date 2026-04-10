@@ -1,12 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { 
-  MessageSquare, 
   X, 
   Send, 
-  Sparkles, 
-  Search, 
   MapPin, 
-  Phone,
   ArrowRight,
   Bot
 } from 'lucide-react';
@@ -38,6 +34,12 @@ export function HubBot() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const handleTrigger = () => setIsOpen(true);
+    window.addEventListener('open-hubbot', handleTrigger);
+    return () => window.removeEventListener('open-hubbot', handleTrigger);
+  }, []);
+
+  useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
@@ -56,7 +58,6 @@ export function HubBot() {
       const query = input.toLowerCase();
       let responseText = "I found a few things that might help you:";
       
-      // Simple Keyword Mapping
       const foundBusinesses = dummyBusinesses.filter(b => 
         b.name.toLowerCase().includes(query) || 
         b.description.toLowerCase().includes(query) ||
@@ -78,14 +79,14 @@ export function HubBot() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
+    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end pointer-events-none">
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95, transformOrigin: 'bottom right' }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="mb-4 w-[350px] sm:w-[400px] h-[550px] bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden"
+            className="mb-4 w-[350px] sm:w-[400px] h-[580px] bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border border-gray-100 flex flex-col overflow-hidden pointer-events-auto"
           >
             {/* Header */}
             <div className="p-5 bg-secondary text-white flex items-center justify-between">
@@ -94,8 +95,8 @@ export function HubBot() {
                   <Bot className="size-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm leading-tight">HubBot Discovery</h3>
-                  <p className="text-[10px] text-white/60">Powered by Kasaragod Hub</p>
+                  <h3 className="font-black text-xs uppercase tracking-widest leading-tight">HubBot Support</h3>
+                  <p className="text-[10px] text-white/50 font-bold uppercase tracking-wider">Live Discovery & Help</p>
                 </div>
               </div>
               <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-white hover:bg-white/10 rounded-xl">
@@ -106,15 +107,15 @@ export function HubBot() {
             {/* Chat Area */}
             <div 
               ref={scrollRef}
-              className="flex-1 overflow-y-auto p-5 space-y-4 scroll-smooth"
+              className="flex-1 overflow-y-auto p-5 space-y-4 scroll-smooth bg-gray-50/30"
             >
               {messages.map((msg) => (
                 <div key={msg.id} className={cn("flex flex-col", msg.sender === 'user' ? "items-end" : "items-start")}>
                   <div className={cn(
-                    "max-w-[85%] p-4 rounded-2xl text-xs leading-relaxed",
+                    "max-w-[85%] p-4 rounded-2xl text-[13px] leading-relaxed font-medium transition-all",
                     msg.sender === 'user' 
                       ? "bg-primary text-white rounded-tr-none shadow-md shadow-primary/10" 
-                      : "bg-gray-50 text-secondary rounded-tl-none border border-gray-100"
+                      : "bg-white text-secondary rounded-tl-none border border-gray-100 shadow-sm"
                   )}>
                     {msg.text}
                   </div>
@@ -126,14 +127,14 @@ export function HubBot() {
                           key={b.id} 
                           to={`/business/${b.slug}`}
                           onClick={() => setIsOpen(false)}
-                          className="flex items-center gap-3 p-2 rounded-xl border border-gray-100 hover:border-primary/30 hover:bg-primary/5 transition-all group"
+                          className="flex items-center gap-3 p-2.5 bg-white rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all group"
                         >
                           <div className="size-10 rounded-lg overflow-hidden shrink-0 border border-gray-50">
                             <img src={b.logo_url} className="w-full h-full object-cover" alt="" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-[10px] font-bold text-secondary truncate">{b.name}</h4>
-                            <p className="text-[9px] text-muted-foreground flex items-center gap-1">
+                            <h4 className="text-[10px] font-black text-secondary tracking-tight truncate uppercase">{b.name}</h4>
+                            <p className="text-[9px] text-muted-foreground flex items-center gap-1 font-bold">
                               <MapPin className="size-2.5" /> {b.location}
                             </p>
                           </div>
@@ -145,28 +146,28 @@ export function HubBot() {
                 </div>
               ))}
               {isTyping && (
-                <div className="flex gap-1.5 p-3 rounded-xl bg-gray-50 w-12 items-center justify-center">
-                   <div className="size-1 bg-gray-300 rounded-full animate-bounce" />
-                   <div className="size-1 bg-gray-300 rounded-full animate-bounce [animation-delay:0.2s]" />
-                   <div className="size-1 bg-gray-300 rounded-full animate-bounce [animation-delay:0.4s]" />
+                <div className="flex gap-1.5 p-3 rounded-xl bg-white border border-gray-100 w-12 items-center justify-center">
+                   <div className="size-1 bg-primary rounded-full animate-bounce" />
+                   <div className="size-1 bg-primary rounded-full animate-bounce [animation-delay:0.2s]" />
+                   <div className="size-1 bg-primary rounded-full animate-bounce [animation-delay:0.4s]" />
                 </div>
               )}
             </div>
 
             {/* Input Area */}
-            <div className="p-4 border-t border-gray-50">
+            <div className="p-4 border-t border-gray-100 bg-white">
               <div className="relative">
                  <Input 
                    value={input}
                    onChange={(e) => setInput(e.target.value)}
                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                    placeholder="Ask anything about Kasaragod..."
-                   className="h-12 rounded-2xl border-gray-100 bg-gray-50 pr-12 focus-visible:bg-white transition-all text-sm"
+                   className="h-12 rounded-2xl border-none bg-gray-100/50 pr-12 focus-visible:bg-white focus-visible:ring-primary/20 transition-all text-sm font-medium"
                  />
                  <Button 
                    onClick={handleSend}
                    size="icon" 
-                   className="absolute right-1.5 top-1.5 size-9 rounded-xl shadow-lg shadow-primary/20"
+                   className="absolute right-1.5 top-1.5 size-9 rounded-xl shadow-lg shadow-primary/20 bg-primary hover:bg-orange-600 transition-all"
                  >
                    <Send className="size-4" />
                  </Button>
@@ -175,29 +176,6 @@ export function HubBot() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Trigger Orb */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className={cn(
-          "size-14 rounded-2xl flex items-center justify-center shadow-2xl transition-all relative overflow-hidden group",
-          isOpen ? "bg-white text-secondary rotate-90" : "bg-primary text-white shadow-primary/40"
-        )}
-      >
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/0 to-white/20 group-hover:opacity-100 transition-opacity" />
-        {isOpen ? (
-          <X className="size-6" />
-        ) : (
-          <div className="relative">
-            <MessageSquare className="size-6" />
-            <div className="absolute -top-1 -right-1 size-3 bg-white rounded-full flex items-center justify-center">
-              <Sparkles className="size-2 text-primary" />
-            </div>
-          </div>
-        )}
-      </motion.button>
     </div>
   );
 }

@@ -7,15 +7,15 @@ import { useUIStore } from '@/store/useUIStore';
 const navItems = [
   { icon: Home,       label: 'Home',       path: '/',          action: null },
   { icon: LayoutGrid, label: 'Categories', path: null,         action: 'categories' },
-  { icon: Search,     label: 'Search',     path: '/directory', action: null },
+  { icon: Search,     label: 'Search',     path: null,         action: 'search' },
   { icon: Briefcase,  label: 'Masters',    path: '/experts',   action: null },
-  { icon: User,       label: 'Profile',    path: '/profile',   action: null },
+  {icon: User, label: 'Account', path: '/login', action: null},
 ];
 
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
 export function BottomNav() {
-  const { openCategorySheet } = useUIStore();
+  const { openCategorySheet, setSearchOpen } = useUIStore();
   const location = useLocation();
   const scrollDirection = useScrollDirection();
 
@@ -56,6 +56,14 @@ export function BottomNav() {
           if (item.action === 'categories') {
             return (
               <button key={item.label} onClick={openCategorySheet} className="outline-none">
+                {content}
+              </button>
+            );
+          }
+
+          if (item.action === 'search') {
+            return (
+              <button key={item.label} onClick={() => setSearchOpen(true)} className="outline-none">
                 {content}
               </button>
             );
