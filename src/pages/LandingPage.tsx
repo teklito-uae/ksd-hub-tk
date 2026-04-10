@@ -306,9 +306,11 @@ export function LandingPage() {
             <h2 className="text-xl md:text-2xl font-black text-secondary tracking-tight">Browse by Category</h2>
             <p className="text-muted-foreground text-xs mt-1">Discover businesses across 50+ curated sectors</p>
           </motion.div>
-          <Button variant="ghost" size="sm" className="text-primary font-semibold text-xs group flex hover:bg-primary/10 rounded-lg">
-            All <ArrowRight className="ml-1 size-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </Button>
+          <Link to="/directory">
+            <Button variant="ghost" size="sm" className="text-primary font-semibold text-xs group flex hover:bg-primary/10 rounded-lg">
+              All <ArrowRight className="ml-1 size-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </Button>
+          </Link>
         </div>
         <CategoryList categories={categories} />
       </section>
@@ -419,22 +421,24 @@ export function LandingPage() {
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="group cursor-pointer"
+              className="group cursor-pointer block"
             >
-              <div className="relative aspect-[4/3] rounded-2xl md:rounded-3xl overflow-hidden mb-3">
-                <img
-                  src={list.image}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  alt={list.title}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent p-4 md:p-6 flex flex-col justify-end">
-                  <Badge className="w-fit bg-primary text-white border-none text-[10px] font-bold mb-2">
-                    {list.businessCount} PLACES
-                  </Badge>
-                  <h3 className="text-lg md:text-xl font-black text-white leading-tight">{list.title}</h3>
+              <Link to="/directory">
+                <div className="relative aspect-[4/3] rounded-2xl md:rounded-3xl overflow-hidden mb-3">
+                  <img
+                    src={list.image}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt={list.title}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent p-4 md:p-6 flex flex-col justify-end">
+                    <Badge className="w-fit bg-primary text-white border-none text-[10px] font-bold mb-2">
+                      {list.businessCount} PLACES
+                    </Badge>
+                    <h3 className="text-lg md:text-xl font-black text-white leading-tight">{list.title}</h3>
+                  </div>
                 </div>
-              </div>
-              <p className="text-[10px] md:text-xs text-muted-foreground line-clamp-2 px-1">{list.description}</p>
+                <p className="text-[10px] md:text-xs text-muted-foreground line-clamp-2 px-1 hover:text-secondary transition-colors">{list.description}</p>
+              </Link>
             </motion.div>
           ))}
         </div>

@@ -3,6 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const slides = [
   {
@@ -12,6 +13,7 @@ const slides = [
     title: 'Find Your Dream Property in Kasaragod',
     subtitle: 'Explore luxury villas, apartments, and commercial spaces.',
     cta: 'Browse Listings',
+    link: '/directory?category=real-estate',
   },
   {
     id: 2,
@@ -20,6 +22,7 @@ const slides = [
     title: 'Authentic Malabar Cuisine, Near You',
     subtitle: 'From spicy biryani to fresh seafood — discover the best local restaurants.',
     cta: 'Explore Eateries',
+    link: '/directory?category=food-dining',
   },
   {
     id: 3,
@@ -28,6 +31,7 @@ const slides = [
     title: 'Explore Bekal\'s Coastal Luxury',
     subtitle: 'Book stays at handpicked resorts right on the Arabian Sea.',
     cta: 'See Resorts',
+    link: '/directory?category=travel-stays',
   },
 ];
 
@@ -71,9 +75,12 @@ export function HeroCarousel() {
                   <p className="text-gray-300 text-sm md:text-base mb-8 leading-relaxed">
                     {slide.subtitle}
                   </p>
-                  <button className="bg-primary hover:bg-orange-600 text-white text-sm font-semibold px-7 py-3 rounded-xl transition-all hover:scale-[1.03] active:scale-95 shadow-lg shadow-primary/30">
+                  <Link 
+                     to={slide.link} 
+                     className="inline-block bg-primary hover:bg-orange-600 text-white text-sm font-semibold px-7 py-3 rounded-xl transition-all hover:scale-[1.03] active:scale-95 shadow-lg shadow-primary/30"
+                  >
                     {slide.cta}
-                  </button>
+                  </Link>
                 </motion.div>
               </div>
             </div>

@@ -182,9 +182,11 @@ export function ProsPage() {
         <div className="bg-primary/5 rounded-[24px] p-6 text-center border border-primary/10">
           <h3 className="text-sm font-black text-secondary mb-2 uppercase tracking-widest">Join the Network</h3>
           <p className="text-[10px] text-muted-foreground mb-4">Are you a master of your craft in Kasaragod?</p>
-          <Button size="sm" className="rounded-full bg-secondary font-black text-[9px] uppercase tracking-widest px-6 h-9">
-            Apply Now
-          </Button>
+          <Link to="/register">
+            <Button size="sm" className="rounded-full bg-secondary font-black text-[9px] uppercase tracking-widest px-6 h-9 w-full sm:w-auto">
+              Apply Now
+            </Button>
+          </Link>
         </div>
       </section>
     </div>

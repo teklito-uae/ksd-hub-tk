@@ -6,6 +6,7 @@ import {
   CheckCircle2, TrendingUp, MessageSquare, Shield, Globe, Zap, Star,
   BarChart3, MapPin, Phone, Users, ArrowRight, Building2
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { stats, testimonials } from '@/lib/dummy-data';
 
 const benefits = [
@@ -106,19 +107,23 @@ export function ForBusinessesPage() {
               Join 1,200+ local businesses already connecting with high-intent customers across Kasaragod district — at zero cost, forever.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                size="lg"
-                className="bg-primary hover:bg-orange-600 rounded-xl h-12 px-8 font-bold shadow-lg shadow-primary/30 transition-transform hover:scale-105"
-              >
-                Register for Free <ArrowRight className="ml-2 size-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-white/20 text-white hover:bg-white/10 rounded-xl h-12 px-8"
-              >
-                See Sample Profile
-              </Button>
+              <Link to="/register">
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-orange-600 rounded-xl h-12 px-8 font-bold shadow-lg shadow-primary/30 transition-transform hover:scale-105 w-full sm:w-auto"
+                >
+                  Register for Free <ArrowRight className="ml-2 size-4" />
+                </Button>
+              </Link>
+              <Link to="/business/zero-gravity-studio">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-white/20 text-white hover:bg-white/10 rounded-xl h-12 px-8 w-full sm:w-auto"
+                >
+                  See Sample Profile
+                </Button>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -229,9 +234,11 @@ export function ForBusinessesPage() {
               <p className="text-gray-400 text-sm mb-6 leading-relaxed">
                 We believe every local business deserves a strong online presence regardless of budget.
               </p>
-              <Button className="bg-primary hover:bg-orange-600 rounded-xl h-11 px-8 font-bold transition-transform hover:scale-105">
-                Create Free Profile <ArrowRight className="ml-2 size-4" />
-              </Button>
+              <Link to="/register">
+                <Button className="bg-primary hover:bg-orange-600 rounded-xl h-11 px-8 font-bold transition-transform hover:scale-105">
+                  Create Free Profile <ArrowRight className="ml-2 size-4" />
+                </Button>
+              </Link>
             </div>
             <div className="grid grid-cols-1 gap-2.5">
               {planFeatures.map((f, i) => (
@@ -322,12 +329,14 @@ export function ForBusinessesPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button
-                  size="lg"
-                  className="bg-primary hover:bg-orange-600 rounded-xl px-8 font-bold shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 text-white"
-                >
-                  Register Now — It's Free
-                </Button>
+                <Link to="/register">
+                  <Button
+                    size="lg"
+                    className="bg-primary hover:bg-orange-600 rounded-xl px-8 font-bold shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 text-white w-full sm:w-auto"
+                  >
+                    Register Now — It's Free
+                  </Button>
+                </Link>
               </div>
 
               <div className="mt-8 flex items-center justify-center lg:justify-start gap-4">
