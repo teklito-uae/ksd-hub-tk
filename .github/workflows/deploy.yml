@@ -1,0 +1,48 @@
+name: Deploy to Production Branch
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Build Backend
+        run: |
+          cd backend
+          composer install --no-dev --optimize-autoloader
+
+      - name: Prepare Deployment Structure
+        run: |
+          mkdir -p deploy
+          # Move frontend build to root level of deploy folder
+          cp -r frontend/dist/* deploy/
+          # Copy the backend folder into the deploy folder
+          cp -r backend deploy/
+
+      - name: Deploy to Production Branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: production
+          folder: deploy
+          clean: true
