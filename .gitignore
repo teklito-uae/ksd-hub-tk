@@ -1,38 +1,43 @@
 # Dependencies
-/node_modules
-/.pnp
+node_modules/
+vendor/
+.pnp
 .pnp.js
 
 # Testing
-/coverage
+coverage/
 
-# Production
-/dist
+# Production / Build
+dist/
+public/build
+public/hot
+public/storage
+storage/*.key
+
+# Environment
+.env
+.env.*
+!.env.example
 
 # Misc
 .DS_Store
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.phpunit.result.cache
 
-# IDEs and editors
+# IDEs
 .vscode/*
 !.vscode/extensions.json
 .idea
-.shbuild
 *.suo
-*.ntvs*
-*.njsproj
 *.sln
 *.sw?
 
-# Agent specific (if at this level)
-.agent
-agent-prompts
+# Agent & Plans
+.agents/
+agent-prompts/
 DEVELOPMENT_PLAN.md
+BACKEND_DEPLOYMENT_PLAN.md
+BACKEND_IMPLEMENTATION_PLAN.md
+skills-lock.json
