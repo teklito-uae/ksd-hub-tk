@@ -195,12 +195,12 @@ export function LandingPage() {
       <div className="flex flex-col">
         
         {/* ───── 1. CATEGORIES ───── */}
-        <section className="container mx-auto px-4 max-w-7xl mt-4 md:mt-10">
+        <section className="container mx-auto px-4 max-w-7xl mt-4 md:mt-10 order-1 md:order-2">
           <CategoryList categories={categories} loading={loading} />
         </section>
 
         {/* ───── 2. HERO SECTION ───── */}
-        <section className="container mx-auto px-4 max-w-7xl pt-0 md:pt-4 mt-4 md:mt-0">
+        <section className="container mx-auto px-4 max-w-7xl pt-0 md:pt-4 mt-4 md:mt-0 order-2 md:order-1">
           {loading ? (
              <div className="flex flex-col lg:flex-row gap-3 h-auto md:h-[250px]">
                 <Skeleton className="lg:flex-1 w-full h-[130px] md:h-[250px] rounded-2xl md:rounded-3xl" />
