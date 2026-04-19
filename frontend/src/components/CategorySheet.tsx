@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import { categories } from '@/lib/dummy-data';
 import { useUIStore } from '@/store/useUIStore';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 import {
   Drawer,
   DrawerContent,
@@ -28,7 +29,7 @@ export function CategorySheet() {
   const { categorySheetOpen, closeCategorySheet } = useUIStore();
 
   return (
-    <Drawer open={categorySheetOpen} onClose={closeCategorySheet}>
+    <Drawer open={categorySheetOpen} onOpenChange={(open) => !open && closeCategorySheet()}>
       <DrawerContent className="max-h-[85vh]">
         <DrawerHeader className="flex items-center justify-between px-5 pt-4 pb-2">
           <DrawerTitle className="text-base font-bold text-secondary">All Categories</DrawerTitle>
@@ -49,8 +50,9 @@ export function CategorySheet() {
               const Icon = (Icons as any)[cat.icon] || Icons.HelpCircle;
               const accent = accentColors[cat.slug] ?? 'bg-gray-50 text-gray-600';
               return (
-                <button
+                <Link
                   key={cat.id}
+                  to={`/directory/${cat.slug}`}
                   onClick={closeCategorySheet}
                   className="flex flex-col items-center gap-2 p-3 rounded-2xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm active:scale-95 transition-all"
                 >
@@ -60,7 +62,7 @@ export function CategorySheet() {
                   <span className="text-[10px] font-semibold text-secondary text-center leading-tight">
                     {cat.name}
                   </span>
-                </button>
+                </Link>
               );
             })}
           </div>

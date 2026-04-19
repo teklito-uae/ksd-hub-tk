@@ -14,6 +14,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/context/AuthContext';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -23,6 +24,14 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children, role }: DashboardLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    localStorage.clear();
+    navigate('/');
+    window.location.reload();
+  };
 
   const navItems = [
     { icon: LayoutDashboard, label: 'Overview', href: `/dashboard/${role}` },
@@ -66,7 +75,7 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
           </div>
 
           <button
-            onClick={() => navigate('/login')}
+            onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-2 text-muted-foreground hover:text-red-500 transition-colors font-black text-[11px] uppercase tracking-widest"
           >
             <LogOut className="size-4" /> Sign Out
@@ -137,8 +146,8 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
           );
         })}
         <div className="w-px h-6 bg-white/10" />
-        <button className="size-12 flex items-center justify-center rounded-xl text-white/40 hover:text-white active:scale-90 transition-all">
-          <Plus className="size-5" />
+        <button onClick={handleLogout} className="size-12 flex items-center justify-center rounded-xl text-white/40 hover:text-red-400 active:scale-90 transition-all">
+          <LogOut className="size-5" />
         </button>
       </div>
     </div>

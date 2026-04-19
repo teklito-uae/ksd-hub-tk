@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
+use App\Mail\WelcomeUser;
+use Illuminate\Support\Facades\Mail;
+
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -27,6 +30,12 @@ class AuthController extends Controller
             'role' => $validated['role'],
             'phone_number' => $validated['phone_number'] ?? null,
         ]);
+
+        try {
+            Mail::to($user->email)->send(new WelcomeUser($user));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send welcome email: ' . $e->getMessage());
+        }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 

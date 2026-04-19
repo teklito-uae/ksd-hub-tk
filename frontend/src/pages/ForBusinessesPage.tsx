@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { stats, testimonials } from '@/lib/dummy-data';
+import { useUIStore } from '@/store/useUIStore';
 
 const benefits = [
   {
@@ -73,6 +74,8 @@ const fadeIn = {
 };
 
 export function ForBusinessesPage() {
+  const { setAuthModalOpen } = useUIStore();
+
   return (
     <div className="overflow-hidden pb-20">
 
@@ -107,14 +110,13 @@ export function ForBusinessesPage() {
               Join 1,200+ local businesses already connecting with high-intent customers across Kasaragod district — at zero cost, forever.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/register">
-                <Button
-                  size="lg"
-                  className="bg-primary hover:bg-orange-600 rounded-xl h-12 px-8 font-bold shadow-lg shadow-primary/30 transition-transform hover:scale-105 w-full sm:w-auto"
-                >
-                  Register for Free <ArrowRight className="ml-2 size-4" />
-                </Button>
-              </Link>
+              <Button
+                onClick={() => setAuthModalOpen(true)}
+                size="lg"
+                className="bg-primary hover:bg-orange-600 rounded-xl h-12 px-8 font-bold shadow-lg shadow-primary/30 transition-transform hover:scale-105 w-full sm:w-auto"
+              >
+                Register for Free <ArrowRight className="ml-2 size-4" />
+              </Button>
               <Link to="/business/zero-gravity-studio">
                 <Button
                   variant="outline"
@@ -234,11 +236,12 @@ export function ForBusinessesPage() {
               <p className="text-gray-400 text-sm mb-6 leading-relaxed">
                 We believe every local business deserves a strong online presence regardless of budget.
               </p>
-              <Link to="/register">
-                <Button className="bg-primary hover:bg-orange-600 rounded-xl h-11 px-8 font-bold transition-transform hover:scale-105">
-                  Create Free Profile <ArrowRight className="ml-2 size-4" />
-                </Button>
-              </Link>
+              <Button 
+                onClick={() => setAuthModalOpen(true)}
+                className="bg-primary hover:bg-orange-600 rounded-xl h-11 px-8 font-bold transition-transform hover:scale-105"
+              >
+                Create Free Profile <ArrowRight className="ml-2 size-4" />
+              </Button>
             </div>
             <div className="grid grid-cols-1 gap-2.5">
               {planFeatures.map((f, i) => (
@@ -329,14 +332,13 @@ export function ForBusinessesPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Link to="/register">
-                  <Button
-                    size="lg"
-                    className="bg-primary hover:bg-orange-600 rounded-xl px-8 font-bold shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 text-white w-full sm:w-auto"
-                  >
-                    Register Now — It's Free
-                  </Button>
-                </Link>
+                <Button
+                  onClick={() => setAuthModalOpen(true)}
+                  size="lg"
+                  className="bg-primary hover:bg-orange-600 rounded-xl px-8 font-bold shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 text-white w-full sm:w-auto"
+                >
+                  Register Now — It's Free
+                </Button>
               </div>
 
               <div className="mt-8 flex items-center justify-center lg:justify-start gap-4">

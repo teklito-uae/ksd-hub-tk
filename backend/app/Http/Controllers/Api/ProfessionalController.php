@@ -3,38 +3,55 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Professional;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProfessionalController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Professional::query();
+        $params = $request->only(['category_id', 'location_city', 'search']);
+        $isSearchRequest = !empty($params['search']);
+        $cacheKey = 'api:professionals:list:' . md5(json_encode($params));
 
-        if ($request->has('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
+        $fetcher = function () use ($params) {
+            $query = Professional::select([
+                'id', 'category_id', 'name', 'slug', 'profession',
+                'bio', 'avatar_path', 'location_city', 'experience',
+                'projects_completed', 'is_verified', 'whatsapp',
+            ]);
 
-        if ($request->has('location_city')) {
-            $query->where('location_city', $request->location_city);
-        }
+            if (!empty($params['category_id'])) {
+                $query->where('category_id', $params['category_id']);
+            }
+            if (!empty($params['location_city'])) {
+                $query->where('location_city', $params['location_city']);
+            }
+            if (!empty($params['search'])) {
+                $s = $params['search'];
+                $query->where(function ($q) use ($s) {
+                    $q->where('name', 'like', "%{$s}%")
+                      ->orWhere('profession', 'like', "%{$s}%");
+                });
+            }
 
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('profession', 'like', "%{$search}%")
-                  ->orWhere('bio', 'like', "%{$search}%");
-            });
-        }
+            return $query->orderBy('name')->get()->toArray();  // plain array
+        };
 
-        return response()->json($query->get());
+        $result = $isSearchRequest
+            ? $fetcher()
+            : Cache::remember($cacheKey, now()->addMinutes(5), $fetcher);
+
+        return response()->json($result);
     }
 
-    public function show($slug)
+    public function show(string $slug)
     {
-        $pro = Professional::where('slug', $slug)->firstOrFail();
+        $pro = Cache::remember("api:professional:{$slug}", now()->addMinutes(10), function () use ($slug) {
+            return Professional::where('slug', $slug)->firstOrFail()->toArray();
+        });
+
         return response()->json($pro);
     }
 }

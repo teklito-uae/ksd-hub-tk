@@ -1,27 +1,32 @@
 import { Home, Search, LayoutGrid, Briefcase, CircleUser } from 'lucide-react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useUIStore } from '@/store/useUIStore';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
+import { useAuth } from '@/context/AuthContext';
 
 const navItems = [
   { icon: Home,       label: 'Home',       path: '/',          action: null },
   { icon: LayoutGrid, label: 'Explore',    path: null,         action: 'categories' },
   { icon: Search,     label: 'Search',     path: null,         action: 'search' },
   { icon: Briefcase,  label: 'Masters',    path: '/experts',   action: null },
-  { icon: CircleUser, label: 'Profile',    path: '/login',     action: null },
+  { icon: CircleUser, label: 'Profile',    path: null,         action: 'profile' },
 ];
 
 export function BottomNav() {
-  const { openCategorySheet, setSearchOpen } = useUIStore();
+  const { openCategorySheet, setSearchOpen, categorySheetOpen, searchOpen, setAuthModalOpen } = useUIStore();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const { direction } = useScrollDirection();
 
-  const isVisible = direction !== 'down';
+  // Hide when any bottom sheet is open
+  const isSheetOpen = categorySheetOpen || searchOpen;
+  const isVisible = !isSheetOpen && direction !== 'down';
 
   return (
-    <div className="fixed bottom-6 left-0 right-0 z-[100] flex justify-center px-6 md:hidden pointer-events-none">
+    <div className={cn("fixed bottom-6 left-0 right-0 z-[100] flex justify-center px-6 md:hidden pointer-events-none", isSheetOpen && "hidden")}>
       <motion.nav
         initial={{ y: 0, opacity: 1 }}
         animate={{ y: isVisible ? 0 : 100, opacity: isVisible ? 1 : 0 }}
@@ -68,6 +73,24 @@ export function BottomNav() {
           if (item.action === 'search') {
             return (
               <button key={item.label} onClick={() => setSearchOpen(true)} className="outline-none focus:outline-none">
+                {content}
+              </button>
+            );
+          }
+
+          if (item.action === 'profile') {
+            return (
+              <button 
+                key={item.label} 
+                onClick={() => {
+                  if (user) {
+                    navigate(user.role === 'pro' ? '/dashboard/pro' : '/dashboard/business');
+                  } else {
+                    setAuthModalOpen(true);
+                  }
+                }} 
+                className="outline-none focus:outline-none"
+              >
                 {content}
               </button>
             );

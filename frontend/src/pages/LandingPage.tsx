@@ -6,28 +6,41 @@ import { CategoryList } from '@/components/CategoryList';
 import { BusinessCarousel } from '@/components/BusinessCarousel';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { 
-  Search, 
-  ArrowRight, 
-  TrendingUp, 
-  CheckCircle2, 
-  Sparkles, 
-  Zap, 
-  Star, 
-  ShieldCheck, 
-  Plus, 
-  Minus, 
-  HelpCircle, 
-  ChevronDown, 
-  ChevronRight, 
-  PhoneCall, 
-  Stethoscope, 
-  Hammer, 
-  Building, 
-  MapPin, 
-  Mic 
+import {
+  Search,
+  ArrowRight,
+  TrendingUp,
+  CheckCircle2,
+  Sparkles,
+  Zap,
+  Star,
+  ShieldCheck,
+  Plus,
+  Minus,
+  HelpCircle,
+  ChevronDown,
+  ChevronRight,
+  PhoneCall,
+  Stethoscope,
+  Hammer,
+  Building,
+  MapPin,
+  Mic,
+  Users,
+  Store,
+  Award,
+  UtensilsCrossed,
+  GraduationCap,
+  Briefcase,
+  HeartPulse,
+  Car,
+  Palmtree,
+  Wrench,
+  HardHat,
+  Banknote,
+  CalendarDays
 } from 'lucide-react';
-import * as LucideIcons from 'lucide-react';
+import * as Icons from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -35,6 +48,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { cn } from '@/lib/utils';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const fadeIn = {
   initial: { opacity: 0 },
@@ -98,6 +112,18 @@ function FaqItem({ faq }: { faq: { question: string, answer: string } }) {
 }
 
 const animatedWords = ["Verified.", "Discovered.", "Simplified.", "Connected."];
+const kasaragodPlaces = ["Uppala", "Kanhangad", "Kumbla", "Nileshwar", "Bekal", "Vidyanagar"];
+
+const heroQuickCategories = [
+  { label: "Restaurants",   icon: UtensilsCrossed, color: "text-red-500 bg-red-50",     slug: "restaurants"   },
+  { label: "Real Estate",   icon: Building,         color: "text-blue-600 bg-blue-50",   slug: "real-estate"   },
+  { label: "Health",        icon: HeartPulse,        color: "text-rose-500 bg-rose-50",   slug: "health-beauty" },
+  { label: "Home Services", icon: Wrench,            color: "text-violet-600 bg-violet-50", slug: "home-services" },
+  { label: "Auto",          icon: Car,               color: "text-orange-600 bg-orange-50", slug: "auto-services" },
+  { label: "Tourism",       icon: Palmtree,          color: "text-teal-600 bg-teal-50",   slug: "tourism"       },
+  { label: "Construction",  icon: HardHat,           color: "text-amber-600 bg-amber-50", slug: "construction"  },
+  { label: "Finance",       icon: Banknote,          color: "text-green-600 bg-green-50", slug: "finance"       },
+];
 
 function MostSearchedKeywords({ keywords }: { keywords: string[] }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -127,12 +153,12 @@ function MostSearchedKeywords({ keywords }: { keywords: string[] }) {
           ))}
         </AnimatePresence>
       </div>
-      
+
       {keywords.length > 8 && (
         <div className="flex justify-center md:justify-start">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => setIsExpanded(!isExpanded)}
             className="text-primary font-black text-[10px] uppercase tracking-widest gap-2 hover:bg-primary/5 rounded-full px-6"
           >
@@ -151,21 +177,33 @@ export function LandingPage() {
   const bentoRef = useRef<HTMLDivElement>(null);
   const [businesses, setBusinesses] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>(staticCategories);
+  const [places, setPlaces] = useState<any[]>([]);
   const [pros, setPros] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Banner slider
+  const bannerImages = [
+    '/assets/banners/banner_webflight_2024.webp',
+    '/assets/banners/banner_interiordesigners_2024.webp',
+    '/assets/banners/banner_packersmovers_2024.webp',
+    '/assets/banners/banner_bills_2024.webp',
+  ];
+  const [bannerSlide, setBannerSlide] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [bizRes, catRes, proRes] = await Promise.all([
+        const [bizRes, catRes, proRes, placesRes] = await Promise.all([
           api.get('/businesses'),
           api.get('/categories'),
-          api.get('/professionals')
+          api.get('/professionals'),
+          api.get('/places')
         ]);
         setBusinesses(bizRes.data);
         if (catRes.data.length > 0) setCategories(catRes.data);
         setPros(proRes.data);
+        setPlaces(placesRes.data);
       } catch (err) {
         console.error('Failed to load landing page data:', err);
       } finally {
@@ -175,12 +213,13 @@ export function LandingPage() {
     fetchData();
   }, []);
 
-  const handleBentoScroll = () => {
-    if (!bentoRef.current) return;
-    const el = bentoRef.current;
-    const cardWidth = el.scrollWidth / 4; // 4 cards total
-    setActiveBentoIndex(Math.min(Math.round(el.scrollLeft / cardWidth), 3));
-  };
+  // Auto-advance banner slider every 4s
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setBannerSlide(i => (i + 1) % bannerImages.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [bannerImages.length]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -190,107 +229,114 @@ export function LandingPage() {
   }, []);
 
   return (
-    <div className="overflow-x-hidden min-h-screen bg-white font-sans selection:bg-primary/20 pb-12 md:pb-24">
-      
+    <div className="overflow-x-hidden min-h-screen bg-white font-sans selection:bg-primary/20 pb-[76px] md:pb-24">
+
       <div className="flex flex-col">
-        
-        {/* ───── 1. CATEGORIES ───── */}
-        <section className="container mx-auto px-4 max-w-7xl mt-4 md:mt-10 order-1 md:order-2">
-          <CategoryList categories={categories} loading={loading} />
-        </section>
 
-        {/* ───── 2. HERO SECTION ───── */}
-        <section className="container mx-auto px-4 max-w-7xl pt-0 md:pt-4 mt-4 md:mt-0 order-2 md:order-1">
-          {loading ? (
-             <div className="flex flex-col lg:flex-row gap-3 h-auto md:h-[250px]">
-                <Skeleton className="lg:flex-1 w-full h-[130px] md:h-[250px] rounded-2xl md:rounded-3xl" />
-                <div className="hidden lg:flex lg:w-fit flex-row gap-3 h-full">
-                   {Array.from({ length: 4 }).map((_, i) => (
-                      <Skeleton key={`hero-skel-${i}`} className="w-[170px] h-full rounded-2xl" />
-                   ))}
-                </div>
-             </div>
-          ) : (
-            <div className="flex flex-col lg:flex-row gap-3 h-auto md:h-[250px]">
-              {/* A. Cinematic Banner */}
-              <div className="lg:flex-1 w-full h-[130px] md:h-[250px] rounded-2xl md:rounded-3xl overflow-hidden border border-gray-100 shadow-sm relative">
-                <Carousel 
-                  plugins={[Autoplay({ delay: 5000 })]}
-                  opts={{ align: "start", loop: true }} 
-                  className="w-full h-full"
-                >
-                  <CarouselContent className="h-full ml-0">
-                    <CarouselItem className="pl-0 h-[130px] md:h-[250px]">
-                      <img src="https://akam.cdn.jdmagicbox.com/images/icontent/newwap/web2022/banner_webflight_2024.webp" className="w-full h-full object-cover block" alt="Flight Banner" />
-                    </CarouselItem>
-                    <CarouselItem className="pl-0 h-[130px] md:h-[250px]">
-                      <img src="https://akam.cdn.jdmagicbox.com/images/icontent/newwap/web2022/banner_hotels_2024.webp" className="w-full h-full object-cover block" alt="Hotels Banner" />
-                    </CarouselItem>
-                  </CarouselContent>
-                </Carousel>
-              </div>
+        {/* ───── HERO BENTO BANNER ───── */}
+        <section className="container mx-auto px-4 max-w-7xl pt-4 md:pt-6">
+          <div className="flex gap-3 md:gap-4">
 
-              {/* B. Hotkeys Row (Desktop Only) */}
-              <div className="hidden lg:flex lg:w-fit flex-row gap-3 h-full">
-                <Link to="/directory" className="shrink-0 group h-full">
-                   <Card className="w-[170px] h-full bg-[#E3F2FD] p-5 rounded-3xl border-none relative overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all shadow-sm">
-                      <div className="relative z-10">
-                        <h3 className="text-blue-900 font-bold text-lg md:text-3xl leading-none mb-1 text-left">B2B</h3>
-                        <p className="text-blue-700/60 text-[10px] font-bold uppercase tracking-widest text-left">Get Quotes</p>
-                      </div>
-                      <div className="absolute bottom-0 right-0 h-[70%] w-full flex items-end justify-end">
-                         <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=300" className="h-full object-cover rounded-tl-3xl opacity-90 group-hover:scale-105 transition-transform" alt="B2B" />
-                      </div>
-                   </Card>
-                </Link>
-
-                <Link to="/directory" className="group shrink-0 h-full">
-                   <Card className="w-[170px] h-full bg-[#F5F5F5] p-5 rounded-3xl border-none relative overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all shadow-sm">
-                      <div className="relative z-10">
-                        <h3 className="text-secondary font-bold text-lg md:text-3xl leading-none mb-1 text-left">REPAIRS</h3>
-                        <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest text-left">Nearby Pros</p>
-                      </div>
-                      <div className="absolute bottom-4 right-4 text-gray-200">
-                         <Hammer className="size-16" />
-                      </div>
-                   </Card>
-                </Link>
-
-                <Link to="/directory" className="group shrink-0 h-full">
-                   <Card className="w-[170px] h-full bg-[#E8EAF6] p-5 rounded-3xl border-none relative overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all shadow-sm">
-                      <div className="relative z-10">
-                        <h3 className="text-indigo-900 font-bold text-lg md:text-3xl leading-none mb-1 text-left">REAL ESTATE</h3>
-                        <p className="text-indigo-700/60 text-[10px] font-bold uppercase tracking-widest text-left">Verified</p>
-                      </div>
-                      <div className="absolute bottom-4 right-4 text-indigo-100">
-                         <Building className="size-16" />
-                      </div>
-                   </Card>
-                </Link>
-
-                <Link to="/directory" className="group shrink-0 h-full">
-                   <Card className="w-[170px] h-full bg-[#E8F5E9] p-5 rounded-3xl border-none relative overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all shadow-sm">
-                      <div className="relative z-10">
-                        <h3 className="text-emerald-900 font-bold text-lg md:text-3xl leading-none mb-1 text-left">DOCTORS</h3>
-                        <p className="text-emerald-700/60 text-[10px] font-bold uppercase tracking-widest text-left">Quick Visit</p>
-                      </div>
-                      <div className="absolute bottom-0 right-0 h-full w-full flex items-end justify-end">
-                         <img src="https://akam.cdn.jdmagicbox.com/images/icontent/newwap/web2022/doctor_square_hotkey.webp?w=2048&q=75" className="h-[95%] object-contain group-hover:scale-105 transition-transform origin-bottom" alt="Doctors" />
-                      </div>
-                   </Card>
-                </Link>
+            {/* SLIDER CARD — visible on all sizes */}
+            <div className="w-full md:flex-[3] h-[160px] md:h-[220px] rounded-2xl overflow-hidden relative shrink-0 cursor-pointer bg-gray-100">
+              {/* Slides */}
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={bannerSlide}
+                  src={bannerImages[bannerSlide]}
+                  alt="Banner"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </AnimatePresence>
+              {/* Dot indicators */}
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                {bannerImages.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setBannerSlide(i)}
+                    className={cn(
+                      "h-[5px] rounded-full transition-all duration-300",
+                      i === bannerSlide
+                        ? "w-5 bg-primary/80"
+                        : "w-[5px] bg-white/50 hover:bg-white/70"
+                    )}
+                  />
+                ))}
               </div>
             </div>
-          )}
+
+            {/* BENTO CARDS — hidden on mobile */}
+            <Link to="/directory/restaurants" className="hidden md:flex md:flex-[0.7] h-[220px] rounded-2xl bg-gradient-to-b from-[#1c1c1e] to-[#2d0a12] p-5 flex-col justify-between text-white relative overflow-hidden group border border-white/5">
+              <div className="absolute inset-0 opacity-[0.12] mix-blend-overlay pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
+              <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/30 transition-colors" />
+              <div className="relative z-10"><Icons.UtensilsCrossed className="size-8 md:size-10 text-white/80 stroke-[1.5]" /></div>
+              <div className="relative z-10">
+                <h3 className="text-lg font-bold tracking-tight leading-tight">FOOD &<br/>DINING</h3>
+                <p className="text-[10px] font-semibold text-white/40 uppercase tracking-wider mt-0.5">Top Rated</p>
+              </div>
+            </Link>
+
+            <Link to="/directory/home-services" className="hidden md:flex md:flex-[0.7] h-[220px] rounded-2xl bg-gradient-to-b from-[#1c1c1e] to-[#0a1a2d] p-5 flex-col justify-between text-white relative overflow-hidden group border border-white/5">
+              <div className="absolute inset-0 opacity-[0.12] mix-blend-overlay pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
+              <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl group-hover:bg-blue-400/20 transition-colors" />
+              <div className="relative z-10"><Icons.Wrench className="size-8 md:size-10 text-white/80 stroke-[1.5]" /></div>
+              <div className="relative z-10">
+                <h3 className="text-lg font-bold tracking-tight leading-tight">REPAIRS</h3>
+                <p className="text-[10px] font-semibold text-white/40 uppercase tracking-wider mt-0.5">Nearby Pros</p>
+              </div>
+            </Link>
+
+            <Link to="/directory/real-estate" className="hidden md:flex md:flex-[0.7] h-[220px] rounded-2xl bg-gradient-to-b from-[#1c1c1e] to-[#0a2d1a] p-5 flex-col justify-between text-white relative overflow-hidden group border border-white/5">
+              <div className="absolute inset-0 opacity-[0.12] mix-blend-overlay pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
+              <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl group-hover:bg-emerald-400/20 transition-colors" />
+              <div className="relative z-10"><Icons.Home className="size-8 md:size-10 text-white/80 stroke-[1.5]" /></div>
+              <div className="relative z-10">
+                <h3 className="text-lg font-bold tracking-tight leading-tight">REAL<br/>ESTATE</h3>
+                <p className="text-[10px] font-semibold text-white/40 uppercase tracking-wider mt-0.5">Verified</p>
+              </div>
+            </Link>
+
+            <Link to="/directory/health-beauty" className="hidden md:flex md:flex-[0.7] h-[220px] rounded-2xl bg-gradient-to-b from-[#1c1c1e] to-[#1a0a2d] p-5 flex-col justify-between text-white relative overflow-hidden group border border-white/5">
+              <div className="absolute inset-0 opacity-[0.12] mix-blend-overlay pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
+              <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-violet-400/10 rounded-full blur-2xl group-hover:bg-violet-400/20 transition-colors" />
+              <div className="relative z-10"><Icons.Stethoscope className="size-8 md:size-10 text-white/80 stroke-[1.5]" /></div>
+              <div className="relative z-10">
+                <h3 className="text-lg font-bold tracking-tight leading-tight">DOCTORS</h3>
+                <p className="text-[10px] font-semibold text-white/40 uppercase tracking-wider mt-0.5">Quick Visit</p>
+              </div>
+            </Link>
+
+          </div>
+        </section>
+
+        {/* ───── CATEGORIES SECTION ───── */}
+        <section className="container mx-auto px-4 max-w-7xl mt-6 md:mt-10">
+          <div className="flex items-end justify-between mb-5 md:mb-7">
+            <div>
+              <h2 className="text-lg md:text-xl font-bold text-secondary tracking-tight">Browse by Category</h2>
+              <p className="text-[11px] md:text-sm text-gray-400 mt-0.5 font-medium">Find what you need, instantly</p>
+            </div>
+            <Link to="/directory">
+              <Button variant="ghost" size="sm" className="text-primary font-bold text-xs group flex items-center hover:bg-primary/5 rounded-xl px-3 h-9 gap-1">
+                View All <ArrowRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </Button>
+            </Link>
+          </div>
+          <CategoryList categories={categories} loading={loading} />
         </section>
       </div>
+
 
       {/* ───── 3. EXPERT SPOTLIGHT ───── */}
       <section className="container mx-auto px-4 max-w-7xl mt-8 md:mt-16">
         <Carousel opts={{ align: "start", loop: true }} className="w-full relative">
           <div className="flex flex-row items-end justify-between gap-4 mb-4 md:mb-8">
             <div className="space-y-0.5">
-              <h2 className="text-lg md:text-3xl font-black text-secondary tracking-tight">Hire Verified Talent.</h2>
+              <h2 className="text-lg md:text-2xl font-bold text-secondary tracking-tight">Hire Verified Talent.</h2>
               <p className="text-muted-foreground text-[10px] md:text-sm font-medium">District's top professionals, verified by our team.</p>
             </div>
 
@@ -302,7 +348,7 @@ export function LandingPage() {
               </Link>
             </div>
           </div>
-          
+
           <CarouselContent className="-ml-2 md:-ml-4 py-1">
             {loading ? (
               Array.from({ length: 5 }).map((_, i) => (
@@ -324,17 +370,18 @@ export function LandingPage() {
                     className="h-full px-0.5 pb-0.5"
                   >
                     <Link to={`/expert/${pro.slug}`} className="block h-full cursor-grab active:cursor-grabbing">
-                      <Card className="p-3 md:p-5 rounded-2xl border-gray-100 bg-white hover:border-primary/20 hover:shadow-lg transition-all group relative overflow-hidden h-full flex flex-col items-center text-center">
-                        <div className="size-12 md:size-16 rounded-full overflow-hidden shadow-sm border border-gray-100 mb-2 md:mb-3 text-center">
-                          <img src={pro.avatar_path || pro.avatar} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all mx-auto" alt={pro.name} />
+                      <Card className="p-3 md:p-5 rounded-[1.5rem] border-gray-100 bg-white shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden h-full flex flex-col items-center text-center">
+                        <div className="absolute top-0 inset-x-0 h-20 bg-gradient-to-b from-primary/5 to-transparent"></div>
+                        <div className="size-14 md:size-20 rounded-full overflow-hidden shadow-sm border-4 border-white mb-3 md:mb-4 text-center z-10 relative">
+                          <img src={pro.avatar_path || pro.avatar} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 mx-auto" alt={pro.name} />
                         </div>
-                        <h4 className="text-[11px] md:text-base font-bold text-secondary group-hover:text-primary transition-colors leading-tight mb-0.5 truncate w-full">{pro.name}</h4>
-                        <p className="text-[8px] md:text-[10px] font-medium text-muted-foreground uppercase tracking-wider truncate w-full">{pro.profession}</p>
-                        <div className="flex items-center justify-center gap-1 mt-1.5 md:mt-2">
-                          <div className="flex items-center gap-0.5 bg-primary/5 px-1 py-0.5 rounded text-[8px] md:text-[9px] font-bold text-primary">
-                            <Star className="size-2 fill-current text-primary" /> {pro.rating || 5}
+                        <h4 className="text-[12px] md:text-base font-extrabold text-secondary group-hover:text-primary transition-colors leading-tight mb-1 truncate w-full z-10">{pro.name}</h4>
+                        <p className="text-[9px] md:text-[10px] font-bold text-primary uppercase tracking-widest truncate w-full mb-3 z-10">{pro.profession}</p>
+                        <div className="flex items-center justify-center gap-1.5 mt-auto z-10">
+                          <div className="flex items-center gap-0.5 bg-amber-50 px-1.5 py-0.5 rounded-md text-[9px] font-bold text-amber-600">
+                            <Star className="size-2.5 fill-current text-amber-500" /> {pro.rating || 5.0}
                           </div>
-                          <span className="text-[8px] md:text-[9px] font-semibold text-muted-foreground">• {pro.experience || '3+ yrs'}</span>
+                          <span className="text-[9px] font-semibold text-gray-400">• {pro.experience || '3+ yrs'}</span>
                         </div>
                       </Card>
                     </Link>
@@ -349,10 +396,10 @@ export function LandingPage() {
       {/* ───── 4. PARTNERS CAROUSEL ───── */}
       <section className="container mx-auto px-4 max-w-7xl mt-6 md:mt-12">
         {loading ? (
-             <div className="flex justify-center gap-3 py-2">
-               <Skeleton className="h-[200px] md:h-[250px] w-full max-w-[300px] rounded-2xl" />
-               <Skeleton className="h-[200px] md:h-[250px] w-full max-w-[300px] rounded-2xl" />
-             </div>
+          <div className="flex justify-center gap-3 py-2">
+            <Skeleton className="h-[200px] md:h-[250px] w-full max-w-[300px] rounded-2xl" />
+            <Skeleton className="h-[200px] md:h-[250px] w-full max-w-[300px] rounded-2xl" />
+          </div>
         ) : (
           <BusinessCarousel
             title="Featured Partners"
@@ -370,9 +417,9 @@ export function LandingPage() {
         >
           <div className="container mx-auto px-4 max-w-7xl">
             {loading ? (
-               <div className="flex justify-center gap-3 py-4">
-                 <Skeleton className="h-[180px] md:h-[200px] w-full rounded-2xl" />
-               </div>
+              <div className="flex justify-center gap-3 py-4">
+                <Skeleton className="h-[180px] md:h-[200px] w-full rounded-2xl" />
+              </div>
             ) : (
               <BusinessCarousel
                 title={section.label}
@@ -405,13 +452,15 @@ export function LandingPage() {
               className="group cursor-pointer block"
             >
               <Link to="/directory">
-                <div className="relative aspect-[4/3] rounded-2xl md:rounded-3xl overflow-hidden mb-2 md:mb-3">
+                <div className="relative aspect-[4/3] rounded-[1.5rem] overflow-hidden mb-2 md:mb-3 shadow-sm group-hover:shadow-2xl transition-all duration-300">
                   <img src={list.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={list.title} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-4 md:p-6 flex flex-col justify-end">
-                    <Badge className="w-fit bg-primary text-white border-none text-[8px] md:text-[10px] font-bold mb-1.5">
-                      {list.businessCount} PLACES
-                    </Badge>
-                    <h3 className="text-lg md:text-xl font-bold text-white leading-tight">{list.title}</h3>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 md:p-6 flex flex-col justify-end">
+                    <div className="transform transition-transform duration-500 group-hover:-translate-y-1">
+                      <Badge className="w-fit bg-white/90 backdrop-blur-sm text-secondary border-none text-[9px] md:text-[10px] font-black mb-2 uppercase shadow-sm">
+                        {list.businessCount} PLACES
+                      </Badge>
+                      <h3 className="text-xl md:text-2xl font-black text-white leading-tight">{list.title}</h3>
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -437,31 +486,39 @@ export function LandingPage() {
       {/* ───── 8. CTA SECTION ───── */}
       <section className="container mx-auto px-4 max-w-7xl mt-8 md:mt-14 mb-8 md:mb-14">
         <div className="bg-secondary rounded-2xl md:rounded-[2.5rem] p-8 md:p-14 relative overflow-hidden text-center lg:text-left shadow-2xl shadow-secondary/10">
-           <div className="relative z-10 grid lg:grid-cols-2 gap-8 md:gap-10 items-center">
-              <div className="space-y-3">
-                 <h2 className="text-2xl md:text-4xl font-black text-white leading-tight">Grow with the Hub.</h2>
-                 <p className="text-gray-400 text-[11px] md:text-sm max-w-md mx-auto lg:mx-0 font-medium leading-relaxed">Join thousands of local businesses and professionals on the district's largest digital hub.</p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 lg:justify-end">
-                 <Button size="lg" className="bg-primary text-white font-black h-12 md:h-14 px-8 rounded-xl md:rounded-2xl text-xs md:text-sm">List Your Business</Button>
-                 <Button size="lg" variant="outline" className="border-white/20 text-white h-12 md:h-14 px-8 rounded-xl md:rounded-2xl hover:bg-white/10 text-xs md:text-sm font-bold">Find Services</Button>
-              </div>
-           </div>
+          <div className="relative z-10 grid lg:grid-cols-2 gap-8 md:gap-10 items-center">
+            <div className="space-y-3">
+              <h2 className="text-2xl md:text-4xl font-black text-white leading-tight">Grow with the Hub.</h2>
+              <p className="text-gray-400 text-[11px] md:text-sm max-w-md mx-auto lg:mx-0 font-medium leading-relaxed">Join thousands of local businesses and professionals on the district's largest digital hub.</p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 lg:justify-end">
+              <Button size="lg" className="bg-primary text-white font-black h-12 md:h-14 px-8 rounded-xl md:rounded-2xl text-xs md:text-sm">List Your Business</Button>
+              <Button size="lg" variant="outline" className="border-white/20 text-white h-12 md:h-14 px-8 rounded-xl md:rounded-2xl hover:bg-white/10 text-xs md:text-sm font-bold">Find Services</Button>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ───── 9. MOST SEARCHED (SEO LINKS) ───── */}
-      <section className="container mx-auto px-4 max-w-7xl mt-8 mb-10 border-t border-gray-50 pt-10">
-        <div className="space-y-8 pb-10">
-          
+      <section className="container mx-auto px-4 max-w-7xl mt-8 mb-10 border-t border-gray-100 pt-10">
+        <div className="space-y-6 pb-10">
+
           <div className="space-y-3">
-            <h4 className="text-[10px] md:text-xs font-black text-secondary uppercase tracking-widest pl-1 border-l-3 border-primary">Popular Categories</h4>
+            <h4 className="text-[10px] md:text-xs font-black text-secondary uppercase tracking-widest pl-1 border-l-[3px] border-primary">Popular Categories</h4>
             <div className="flex flex-wrap gap-x-2 gap-y-1 text-[10px] md:text-[12px] text-muted-foreground leading-relaxed">
               {[
-                "Real Estate", "Tech", "Education", "Health", "Shopping", "Auto", "Food", "Events", "Tourism", "Build"
+                "Restaurants in Kasaragod", "Hospitals in Kanhangad", "Real Estate Nileshwar", "Schools in Cheruvathur",
+                "Car Service Centers Uppala", "Salons & Beauty Parlours Manjeshwar", "Wedding Halls Kumbla", "Ayurveda Centers Badiyadka",
+                "Hotels & Resorts Trikaripur", "Software Companies Udma", "Grocery Stores Kanhangad",
+                "Plumbers in Kasaragod Town", "Electricians Nileshwar", "Jewellery Shops Cheruvathur",
+                "Driving Schools Uppala", "Lawyers in Manjeshwar", "Architects Kumbla",
+                "Interior Designers Badiyadka", "Tour Operators Trikaripur", "Coaching Centers Udma",
+                "Dentists Kasaragod", "Pharmacy near Kanhangad", "Banks in Nileshwar", "Insurance Agents Cheruvathur",
+                "Homestays near Uppala", "Builders Manjeshwar", "Hardware Stores Kumbla",
+                "Textile Shops Badiyadka", "Electronics Shops Trikaripur", "Supermarkets in Udma",
               ].map((link, i, arr) => (
                 <span key={link} className="flex items-center">
-                  <span className="hover:text-primary cursor-pointer transition-colors font-bold text-secondary/70">{link}</span>
+                  <Link to="/directory" className="hover:text-primary transition-colors font-semibold text-secondary/70">{link}</Link>
                   {arr.length - 1 !== i && <span className="mx-1.5 text-gray-200">|</span>}
                 </span>
               ))}
@@ -469,19 +526,80 @@ export function LandingPage() {
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-[10px] md:text-xs font-black text-secondary uppercase tracking-widest pl-1 border-l-3 border-primary/50">Trending</h4>
-            <div className="flex flex-wrap gap-x-2 gap-y-2 text-[10px] text-muted-foreground items-center">
+            <h4 className="text-[10px] md:text-xs font-black text-secondary uppercase tracking-widest pl-1 border-l-[3px] border-primary/50">Trending Searches</h4>
+            <div className="flex flex-wrap gap-x-2 gap-y-2 text-[10px] md:text-[11px] text-muted-foreground items-center">
               {[
-                "Packers", "Designers", "CCTV", "Pet Shop", "Resorts", "Biryani"
+                "Malabar Biryani in Kasaragod", "Best CCTV installation Kanhangad", "Bekal Fort resorts",
+                "AC repair Nileshwar", "Packers and movers Cheruvathur", "Web design company Uppala",
+                "Marriage hall booking Manjeshwar", "Ayurvedic spa in Kumbla", "Kindergarten school Badiyadka",
+                "Pet shop Trikaripur", "Ranipuram trek packages", "Organic farm products Udma",
+                "Boat house Valiyaparamba", "Photography studio Kasaragod", "Bike service center Kanhangad",
+                "Gold jewellery shop Nileshwar", "Mobile repair Cheruvathur", "Flower shop Uppala",
+                "Catering service Manjeshwar", "Event management Kumbla", "Pest control service Badiyadka",
+                "House painting Trikaripur", "Solar panel installation Udma", "CBSE school Kasaragod",
+                "Physiotherapy clinic Kanhangad", "Eye specialist Nileshwar", "Car rental Cheruvathur",
+                "Tuition center Uppala", "Yoga class Manjeshwar", "Gym in Kumbla",
+                "Real estate agent Badiyadka", "Plot for sale Trikaripur", "Commercial space rent Udma",
+                "Wax museum Kasaragod", "Sea food restaurant Kanhangad", "Kerala thali Nileshwar",
+                "Baby store Cheruvathur", "Home cleaning service Uppala", "Laptop repair Manjeshwar",
+                "Printing shop Kumbla", "Bakery Badiyadka", "Cake shop Trikaripur",
+                "Coffee shop Udma", "AC servicing Kasaragod", "RO water purifier service Kanhangad",
+                "DTH service Nileshwar", "Hair salon men Cheruvathur", "Bridal makeup Uppala",
+                "Nursery plants Manjeshwar", "Fish market Kumbla", "Cashew factory Badiyadka",
+                "Halwa shop Trikaripur", "Beef biryani Udma", "Ayurveda massage Kasaragod",
+                "Villa for sale Kanhangad", "Houseboat Nileshwar", "Travel agent Cheruvathur",
+                "Hotel near Uppala", "Budget hotel Manjeshwar", "Family restaurant Kumbla",
+                "CBSE tuition Badiyadka", "Home nursing Trikaripur", "Medical lab Udma",
+                "Diagnostic center Kasaragod", "Blood bank Kanhangad", "Orthopedic hospital Nileshwar",
+                "Courier service Cheruvathur", "Speed post Uppala", "Notary Manjeshwar",
+                "Chartered accountant Kumbla", "GST filing Badiyadka", "Business registration Trikaripur",
+                "Company formation Udma", "Tax consultant Kasaragod", "Loan service Kanhangad",
+                "Chit fund Nileshwar", "Mutual fund agent Cheruvathur", "Life insurance Uppala",
+                "Vehicle insurance Manjeshwar", "Property registration Kumbla",
               ].map((link, i, arr) => (
                 <span key={link} className="flex items-center">
-                  <span className="hover:text-primary cursor-pointer transition-colors font-medium">{link}</span>
+                  <Link to="/directory" className="hover:text-primary transition-colors font-medium">{link}</Link>
                   {arr.length - 1 !== i && <span className="mx-2 text-gray-200/50">|</span>}
                 </span>
               ))}
             </div>
           </div>
 
+        </div>
+      </section>
+
+      {/* ───── 10. FEATURED IN MEDIA ───── */}
+      <section className="py-10 md:py-14 border-t border-gray-100">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="text-center mb-8">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-2">As Seen In</p>
+            <h2 className="text-xl md:text-2xl font-bold text-secondary tracking-tight">Trusted by Kerala's Leading Media</h2>
+            <p className="text-[12px] text-gray-400 mt-1 font-medium">Recognised and featured across top regional news channels & publications</p>
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
+            {[
+              { name: 'Mathrubhumi', abbr: 'MB' },
+              { name: 'Manorama', abbr: 'MM' },
+              { name: 'Asianet News', abbr: 'AN' },
+              { name: 'Media One', abbr: 'MO' },
+              { name: 'Janam TV', abbr: 'JN' },
+              { name: 'Reporter TV', abbr: 'RT' },
+              { name: 'Suprabhatham', abbr: 'SP' },
+              { name: 'Kerala Kaumudi', abbr: 'KK' },
+              { name: 'Madhyamam', abbr: 'MD' },
+              { name: 'Deepika', abbr: 'DK' },
+              { name: 'DC Books', abbr: 'DC' },
+              { name: 'Chandrika', abbr: 'CH' },
+            ].map((media) => (
+              <div key={media.name}
+                className="flex flex-col items-center justify-center gap-1.5 opacity-50 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-300 cursor-default group">
+                <div className="size-12 md:size-14 rounded-2xl bg-secondary/5 group-hover:bg-primary/10 border border-gray-100 group-hover:border-primary/20 flex items-center justify-center transition-all">
+                  <span className="text-[11px] font-black text-secondary group-hover:text-primary tracking-tight">{media.abbr}</span>
+                </div>
+                <span className="text-[9px] md:text-[10px] font-bold text-gray-400 group-hover:text-secondary transition-colors whitespace-nowrap">{media.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -6,6 +6,8 @@ interface UIStore {
   closeCategorySheet: () => void;
   searchOpen: boolean;
   setSearchOpen: (open: boolean) => void;
+  authModalOpen: boolean;
+  setAuthModalOpen: (open: boolean) => void;
 }
 
 export const useUIStore = create<UIStore>((set) => ({
@@ -14,4 +16,6 @@ export const useUIStore = create<UIStore>((set) => ({
   closeCategorySheet: () => set({ categorySheetOpen: false }),
   searchOpen: false,
   setSearchOpen: (open) => set({ searchOpen: open }),
+  authModalOpen: false,
+  setAuthModalOpen: (open) => set({ authModalOpen: open }),
 }));

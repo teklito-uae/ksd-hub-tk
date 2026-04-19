@@ -5,6 +5,7 @@ export interface Category {
   name: string;
   slug: string;
   icon: string; // Lucide icon name
+  children?: Category[];
 }
 
 export interface Business {
@@ -15,16 +16,19 @@ export interface Business {
   category?: Category;
   description: string;
   address: string;
-  location: string;
+  location?: string;
+  location_city?: string;
   phone: string;
   whatsapp?: string;
   email?: string;
   website?: string;
   logo_url?: string;
+  logo_path?: string;
   images?: string[];
   status: BusinessStatus;
   is_featured: boolean;
   is_verified?: boolean;
+  verification_status?: 'unverified' | 'verified' | 'premium' | 'featured';
   price_range?: 1 | 2 | 3 | 4;
   latitude?: number;
   longitude?: number;
