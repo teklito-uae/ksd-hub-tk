@@ -38,68 +38,56 @@ jobs:
       - name: Prepare Deployment Structure
         run: |
           mkdir -p deploy
-          # 1. Copy Frontend Build (includes .htaccess from public folder)
+          # 1. Copy Frontend Build
           cp -r frontend/dist/* deploy/
           
           # 2. Copy Backend
           cp -r backend deploy/
 
-          # 3. Create Production .env inside backend folder (NO LEADING SPACES)
-          cat <<EOF > deploy/backend/.env
-APP_NAME="Kasaragod Hub"
-APP_ENV=production
-APP_KEY=base64:MfbK+/xwLkQuEJLKM+oeLCBO3UK8lk0ABBVZk9WdbSU=
-APP_DEBUG=true
-APP_URL=https://kasaragodhub.com
+          # 3. Create Production .env (Properly indented for YAML)
+          printf 'APP_NAME="Kasaragod Hub"\n' > deploy/backend/.env
+          printf 'APP_ENV=production\n' >> deploy/backend/.env
+          printf 'APP_KEY=base64:MfbK+/xwLkQuEJLKM+oeLCBO3UK8lk0ABBVZk9WdbSU=\n' >> deploy/backend/.env
+          printf 'APP_DEBUG=true\n' >> deploy/backend/.env
+          printf 'APP_URL=https://kasaragodhub.com\n\n' >> deploy/backend/.env
+          printf 'DB_CONNECTION=mysql\n' >> deploy/backend/.env
+          printf 'DB_HOST=127.0.0.1\n' >> deploy/backend/.env
+          printf 'DB_PORT=3306\n' >> deploy/backend/.env
+          printf 'DB_DATABASE=u703200280_ksdhub_db\n' >> deploy/backend/.env
+          printf 'DB_USERNAME=u703200280_ksdhub_db\n' >> deploy/backend/.env
+          printf 'DB_PASSWORD="hC6A/d+MHSz#"\n\n' >> deploy/backend/.env
+          printf 'FILESYSTEM_DISK=public\n' >> deploy/backend/.env
+          printf 'SESSION_DRIVER=file\n' >> deploy/backend/.env
+          printf 'CACHE_DRIVER=file\n\n' >> deploy/backend/.env
+          printf 'MAIL_MAILER=smtp\n' >> deploy/backend/.env
+          printf 'MAIL_HOST=smtp.hostinger.com\n' >> deploy/backend/.env
+          printf 'MAIL_PORT=465\n' >> deploy/backend/.env
+          printf 'MAIL_USERNAME="no-reply@kasaragodhub.com"\n' >> deploy/backend/.env
+          printf 'MAIL_PASSWORD=">vX8]RH/7vF"\n' >> deploy/backend/.env
+          printf 'MAIL_ENCRYPTION=ssl\n' >> deploy/backend/.env
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=u703200280_ksdhub_db
-DB_USERNAME=u703200280_ksdhub_db
-DB_PASSWORD="hC6A/d+MHSz#"
-
-FILESYSTEM_DISK=public
-SESSION_DRIVER=file
-CACHE_DRIVER=file
-
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.hostinger.com
-MAIL_PORT=465
-MAIL_USERNAME="no-reply@kasaragodhub.com"
-MAIL_PASSWORD=">vX8]RH/7vF"
-MAIL_ENCRYPTION=ssl
-EOF
-
-          # 4. Create Root .htaccess (NO LEADING SPACES)
-          cat <<EOF > deploy/.htaccess
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-
-  # Proxy /api requests to the backend folder
-  RewriteRule ^api/(.*)$ backend/public/index.php [L,QSA]
-
-  # Proxy /setup-db-secret to the backend folder
-  RewriteRule ^setup-db-secret(.*)$ backend/public/index.php [L,QSA]
-
-  # Proxy /check-db to the backend folder
-  RewriteRule ^check-db(.*)$ backend/public/index.php [L,QSA]
-
-  # Standard React SPA Routing
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
-</IfModule>
-EOF
+          # 4. Create Root .htaccess
+          printf '<IfModule mod_rewrite.c>\n' > deploy/.htaccess
+          printf '  RewriteEngine On\n' >> deploy/.htaccess
+          printf '  RewriteBase /\n\n' >> deploy/.htaccess
+          printf '  # Proxy /api requests to the backend folder\n' >> deploy/.htaccess
+          printf '  RewriteRule ^api/(.*)$ backend/public/index.php [L,QSA]\n\n' >> deploy/.htaccess
+          printf '  # Proxy /setup-db-secret to the backend folder\n' >> deploy/.htaccess
+          printf '  RewriteRule ^setup-db-secret(.*)$ backend/public/index.php [L,QSA]\n\n' >> deploy/.htaccess
+          printf '  # Proxy /check-db to the backend folder\n' >> deploy/.htaccess
+          printf '  RewriteRule ^check-db(.*)$ backend/public/index.php [L,QSA]\n\n' >> deploy/.htaccess
+          printf '  # Standard React SPA Routing\n' >> deploy/.htaccess
+          printf '  RewriteRule ^index\\.html$ - [L]\n' >> deploy/.htaccess
+          printf '  RewriteCond %%{REQUEST_FILENAME} !-f\n' >> deploy/.htaccess
+          printf '  RewriteCond %%{REQUEST_FILENAME} !-d\n' >> deploy/.htaccess
+          printf '  RewriteRule . /index.html [L]\n' >> deploy/.htaccess
+          printf '</IfModule>\n' >> deploy/.htaccess
           
           # 5. Fix permissions for Hostinger
           chmod -R 775 deploy/backend/storage
           chmod -R 775 deploy/backend/bootstrap/cache
 
-          # 6. CRITICAL: Remove .gitignore files from deploy folder 
-          # so that vendor/, .env, and .htaccess ARE pushed to production branch
+          # 6. CRITICAL: Remove .gitignore files 
           find deploy -name ".gitignore" -type f -delete
 
       - name: Deploy to Production Branch
