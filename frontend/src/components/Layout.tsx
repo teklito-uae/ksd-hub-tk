@@ -348,7 +348,8 @@ export function Layout() {
           </div>
 
           {/* Mobile: icon row */}
-          <div className="md:hidden flex items-center gap-0.5 shrink-0">
+          <div className="md:hidden flex items-center gap-1 shrink-0">
+            <ThemeToggle />
             <button className="p-2 text-secondary/60 relative active:scale-90 transition-transform">
               <Bell className="size-5" />
               <span className="absolute top-1.5 right-1.5 size-1.5 bg-primary rounded-full" />

@@ -1,33 +1,36 @@
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import { useUIStore } from '@/store/useUIStore';
 import { cn } from '@/lib/utils';
-
-const modes = [
-  { value: 'light' as const, icon: Sun, label: 'Light' },
-  { value: 'dark' as const, icon: Moon, label: 'Dark' },
-  { value: 'system' as const, icon: Monitor, label: 'System' },
-];
+import { useEffect, useState } from 'react';
 
 export function ThemeToggle() {
   const { theme, setTheme } = useUIStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="size-9" />; // Placeholder
+  }
+
+  const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   return (
-    <div className="flex items-center bg-gray-100 dark:bg-white/10 rounded-full p-0.5 gap-0.5">
-      {modes.map((mode) => (
-        <button
-          key={mode.value}
-          onClick={() => setTheme(mode.value)}
-          title={mode.label}
-          className={cn(
-            "size-7 rounded-full flex items-center justify-center transition-all duration-200",
-            theme === mode.value
-              ? "bg-white dark:bg-white/20 text-primary shadow-sm"
-              : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-          )}
-        >
-          <mode.icon className="size-3.5" />
-        </button>
-      ))}
-    </div>
+    <button
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      className={cn(
+        "size-9 rounded-full flex items-center justify-center transition-all duration-300",
+        "bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary"
+      )}
+    >
+      {isDark ? (
+        <Sun className="size-4.5 transition-transform duration-500 rotate-0 scale-100" />
+      ) : (
+        <Moon className="size-4.5 transition-transform duration-500 rotate-0 scale-100" />
+      )}
+    </button>
   );
 }
