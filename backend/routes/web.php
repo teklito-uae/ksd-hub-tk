@@ -15,6 +15,16 @@ Route::get('/setup-db-secret', function () {
         Artisan::call('optimize:clear');
         return "Success: Database migrated and seeded!";
     } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
+        return "Error during setup: " . $e->getMessage();
+    }
+});
+
+// Production DB Connectivity Check
+Route::get('/check-db', function () {
+    try {
+        DB::connection()->getPdo();
+        return "Connected successfully to: " . DB::connection()->getDatabaseName();
+    } catch (\Exception $e) {
+        return "Connection failed: " . $e->getMessage();
     }
 });
