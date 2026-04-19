@@ -28,6 +28,11 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
+  // Ensure url is correctly appended to baseURL (Axios treats / as absolute)
+  if (config.url?.startsWith('/')) {
+    config.url = config.url.substring(1);
+  }
+
   if (config.method?.toLowerCase() === 'get') {
     const url = (config.url || '') + (config.params ? JSON.stringify(config.params) : '');
     const cached = cache.get(url);
