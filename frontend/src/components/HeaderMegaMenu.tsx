@@ -4,15 +4,15 @@ import { ChevronDown } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Category } from '@/types';
+import api from '@/lib/axios';
 
 export function HeaderMegaMenu() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/v1/categories')
-      .then(res => res.json())
-      .then(data => setCategories(data))
+    api.get('/categories')
+      .then(res => setCategories(res.data))
       .catch(err => console.error(err));
   }, []);
 

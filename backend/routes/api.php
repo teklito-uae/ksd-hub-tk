@@ -40,4 +40,18 @@ Route::prefix('v1')->group(function () {
         Route::get('/user',         [AuthController::class, 'me']);
         Route::post('/auth/logout', [AuthController::class, 'logout']);
     });
+
+    // ── Database Management (Secret) ──────────────────────────────────────────
+    Route::get('/migrate-seed-secret', function () {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
+            $o = "Migrations: " . \Illuminate\Support\Facades\Artisan::output();
+            \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+            $o .= "\nSeeding: " . \Illuminate\Support\Facades\Artisan::output();
+            \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+            return response()->json(['message' => 'Success', 'output' => $o]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    });
 });
