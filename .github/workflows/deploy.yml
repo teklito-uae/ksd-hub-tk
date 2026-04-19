@@ -43,9 +43,35 @@ jobs:
           
           # 2. Copy Backend
           cp -r backend deploy/
+
+          # 3. Create Production .env inside backend folder
+          cat <<EOF > deploy/backend/.env
+          APP_NAME="Kasaragod Hub"
+          APP_ENV=production
+          APP_KEY=base64:MfbK+/xwLkQuEJLKM+oeLCBO3UK8lk0ABBVZk9WdbSU=
+          APP_DEBUG=false
+          APP_URL=https://kasaragodhub.com
           
-          # 3. CRITICAL: Remove .gitignore files from deploy folder 
-          # so that vendor/ and other dependencies ARE pushed to production branch
+          DB_CONNECTION=mysql
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_DATABASE=u703200280_ksdhub_db
+          DB_USERNAME=u703200280_ksdhub_db
+          DB_PASSWORD="hC6A/d+MHSz#"
+          
+          FILESYSTEM_DISK=public
+          SESSION_DRIVER=file
+          CACHE_DRIVER=file
+          MAIL_MAILER=smtp
+          MAIL_HOST=smtp.hostinger.com
+          MAIL_PORT=465
+          MAIL_USERNAME="no-reply@kasaragodhub.com"
+          MAIL_PASSWORD=">vX8]RH/7vF"
+          MAIL_ENCRYPTION=ssl
+          EOF
+          
+          # 4. CRITICAL: Remove .gitignore files from deploy folder 
+          # so that vendor/ and .env ARE pushed to production branch
           find deploy -name ".gitignore" -type f -delete
 
       - name: Deploy to Production Branch
