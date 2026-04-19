@@ -17,6 +17,8 @@ const BlogPage = lazy(() => import('@/pages/BlogPage'));
 const BlogPostPage = lazy(() => import('@/pages/BlogPostPage'));
 const BusinessDashboard = lazy(() => import('@/pages/dashboard/BusinessDashboard'));
 const ProDashboard = lazy(() => import('@/pages/dashboard/ProDashboard'));
+const AdminLogin = lazy(() => import('@/pages/admin/AdminLogin'));
+const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'));
 
 // ── Page Loading Fallback ──
 function PageLoader() {
@@ -57,6 +59,10 @@ function App() {
         {/* Dashboards — No global layout (has its own Sidebar) */}
         <Route path="/dashboard/business" element={<Suspense fallback={<PageLoader />}><BusinessDashboard /></Suspense>} />
         <Route path="/dashboard/pro" element={<Suspense fallback={<PageLoader />}><ProDashboard /></Suspense>} />
+        
+        {/* Super Admin Portal */}
+        <Route path="/admin/login" element={<Suspense fallback={<PageLoader />}><AdminLogin /></Suspense>} />
+        <Route path="/admin/dashboard" element={<Suspense fallback={<PageLoader />}><AdminDashboard /></Suspense>} />
       </Routes>
 
       <Toaster />
