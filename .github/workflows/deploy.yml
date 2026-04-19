@@ -58,13 +58,16 @@ jobs:
           printf 'DB_PASSWORD="hC6A/d+MHSz#"\n\n' >> deploy/backend/.env
           printf 'FILESYSTEM_DISK=public\n' >> deploy/backend/.env
           printf 'SESSION_DRIVER=file\n' >> deploy/backend/.env
-          printf 'CACHE_DRIVER=file\n\n' >> deploy/backend/.env
+          printf 'CACHE_DRIVER=file\n' >> deploy/backend/.env
+          printf 'QUEUE_CONNECTION=sync\n\n' >> deploy/backend/.env
           printf 'MAIL_MAILER=smtp\n' >> deploy/backend/.env
           printf 'MAIL_HOST=smtp.hostinger.com\n' >> deploy/backend/.env
           printf 'MAIL_PORT=465\n' >> deploy/backend/.env
           printf 'MAIL_USERNAME="no-reply@kasaragodhub.com"\n' >> deploy/backend/.env
           printf 'MAIL_PASSWORD=">vX8]RH/7vF"\n' >> deploy/backend/.env
           printf 'MAIL_ENCRYPTION=ssl\n' >> deploy/backend/.env
+          printf 'MAIL_FROM_ADDRESS="no-reply@kasaragodhub.com"\n' >> deploy/backend/.env
+          printf 'MAIL_FROM_NAME="Kasaragod Hub"\n' >> deploy/backend/.env
 
           # 4. Create Root .htaccess
           printf '<IfModule mod_rewrite.c>\n' > deploy/.htaccess
