@@ -5,7 +5,6 @@ import { CategorySheet } from './CategorySheet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HubBot } from './HubBot';
 import { AuthModal } from './AuthModal';
-import { ThemeToggle } from './ThemeToggle';
 
 import { Footer } from './Footer';
 import { useNavigate } from 'react-router-dom';
@@ -33,8 +32,8 @@ function MegaMenuDropdown({ cat, onClose }: { cat: Category; onClose: () => void
       transition={{ duration: 0.15, ease: 'easeOut' }}
       className="absolute top-full left-1/2 -translate-x-1/2 pt-4 z-50 min-w-[260px]"
     >
-      <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-popover border-l border-t border-border z-10" />
-      <div className="bg-popover rounded-2xl shadow-2xl shadow-black/12 border border-border py-2 px-2">
+      <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-white border-l border-t border-gray-100 z-10" />
+      <div className="bg-white rounded-2xl shadow-2xl shadow-black/12 border border-gray-100 py-2 px-2">
         <div className="px-3 pb-2 pt-1 border-b border-gray-50 mb-1">
           <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{cat.name}</p>
         </div>
@@ -45,7 +44,7 @@ function MegaMenuDropdown({ cat, onClose }: { cat: Category; onClose: () => void
               <NavLink
                 key={child.id}
                 to={`/directory/${child.slug}`}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 dark:hover:bg-primary/20 text-secondary dark:text-white hover:text-primary dark:hover:text-primary group transition-all duration-150"
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 text-secondary hover:text-primary group transition-all duration-150"
                 onClick={onClose}
               >
                 <div className="size-7 rounded-lg bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center text-gray-400 group-hover:text-primary transition-colors shrink-0">
@@ -59,7 +58,7 @@ function MegaMenuDropdown({ cat, onClose }: { cat: Category; onClose: () => void
         <div className="border-t border-gray-50 mt-1 pt-1.5 px-1">
           <NavLink
             to={`/directory/${cat.slug}`}
-            className="flex items-center gap-1.5 px-3 py-2 text-[12px] font-bold text-primary hover:bg-red-50 dark:hover:bg-primary/20 rounded-xl transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 text-[12px] font-bold text-primary hover:bg-red-50 rounded-xl transition-colors"
             onClick={onClose}
           >
             All {cat.name} <ChevronRight className="size-3.5" />
@@ -82,7 +81,7 @@ function NavCategoryItem({ cat }: { cat: Category }) {
         to={`/directory/${cat.slug}`}
         className={cn(
           "flex items-center gap-1 text-[13px] font-semibold py-3 border-b-2 transition-all duration-150 whitespace-nowrap",
-          open ? "text-primary border-primary" : "text-secondary/80 dark:text-gray-300 border-transparent hover:text-primary dark:hover:text-primary hover:border-gray-200 dark:hover:border-border"
+          open ? "text-primary border-primary" : "text-secondary/80 border-transparent hover:text-primary hover:border-gray-200"
         )}
       >
         {cat.name}
@@ -114,11 +113,11 @@ function AllCategoriesDrawer({ categories, open, onClose }: { categories: Catego
             key="drawer"
             initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 32 }}
-            className="fixed top-0 right-0 h-full w-80 md:w-96 bg-background z-[201] shadow-2xl flex flex-col"
+            className="fixed top-0 right-0 h-full w-80 md:w-96 bg-white z-[201] shadow-2xl flex flex-col"
           >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
               <div>
-                <h2 className="text-base font-extrabold text-secondary dark:text-white">All Categories</h2>
+                <h2 className="text-base font-extrabold text-secondary">All Categories</h2>
                 <p className="text-[11px] text-gray-400 font-medium">Browse {categories.length} categories</p>
               </div>
               <button onClick={onClose} className="size-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors">
@@ -130,7 +129,7 @@ function AllCategoriesDrawer({ categories, open, onClose }: { categories: Catego
                 const Icon = (Icons as any)[cat.icon] || Icons.LayoutGrid;
                 return (
                   <div key={cat.id}>
-                    <NavLink to={`/directory/${cat.slug}`} onClick={onClose} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 dark:hover:bg-primary/20 hover:text-primary dark:hover:text-primary text-secondary dark:text-white group transition-all">
+                    <NavLink to={`/directory/${cat.slug}`} onClick={onClose} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 hover:text-primary text-secondary group transition-all">
                       <div className="size-8 rounded-lg bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center text-gray-500 group-hover:text-primary transition-colors shrink-0">
                         <Icon className="size-4" />
                       </div>
@@ -183,17 +182,17 @@ function MobileSearchSheet({ open, onClose, placeholder, places, navigate }: {
 }) {
   return (
     <Drawer open={open} onOpenChange={(o) => !o && onClose()} repositionInputs={false}>
-      <DrawerContent className="rounded-t-[2rem] outline-none bg-background border-border">
+      <DrawerContent className="rounded-t-[2rem] outline-none">
         <div className="p-5 pb-8 max-h-[85vh] overflow-y-auto w-full">
           <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5 shrink-0" />
-          <h3 className="text-base font-extrabold text-secondary dark:text-white mb-4">Search Kasaragod</h3>
+          <h3 className="text-base font-extrabold text-secondary mb-4">Search Kasaragod</h3>
           {/* Search input */}
           <div className="relative mb-3">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
             <input
               type="text"
               autoFocus
-              className="w-full h-12 pl-10 pr-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-border focus:border-primary focus:ring-1 focus:ring-primary/30 text-[14px] font-medium text-secondary dark:text-white outline-none transition-all placeholder:text-gray-400"
+              className="w-full h-12 pl-10 pr-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary/30 text-[14px] font-medium text-secondary outline-none transition-all placeholder:text-gray-400"
               placeholder={placeholder}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && (e.target as HTMLInputElement).value) {
@@ -207,7 +206,7 @@ function MobileSearchSheet({ open, onClose, placeholder, places, navigate }: {
           <div className="relative mb-5">
             <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
             <select
-              className="w-full h-12 pl-10 pr-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-border text-[13px] font-bold text-secondary dark:text-white appearance-none cursor-pointer outline-none focus:border-primary"
+              className="w-full h-12 pl-10 pr-4 rounded-xl bg-gray-50 border border-gray-200 text-[13px] font-bold text-secondary appearance-none cursor-pointer outline-none focus:border-primary"
               defaultValue="all"
             >
               <option value="all">All Kasaragod</option>
@@ -221,7 +220,7 @@ function MobileSearchSheet({ open, onClose, placeholder, places, navigate }: {
               <button
                 key={s}
                 onClick={() => { onClose(); navigate(`/directory?search=${encodeURIComponent(s)}`); }}
-                className="px-3 py-1.5 bg-gray-50 dark:bg-gray-800 border border-border rounded-full text-[11px] font-semibold text-gray-600 dark:text-gray-300 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all"
+                className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full text-[11px] font-semibold text-gray-600 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all"
               >{s}</button>
             ))}
           </div>
@@ -236,7 +235,7 @@ export function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { categorySheetOpen, searchOpen, setSearchOpen, authModalOpen, setAuthModalOpen, initTheme } = useUIStore();
+  const { categorySheetOpen, searchOpen, setSearchOpen, authModalOpen, setAuthModalOpen } = useUIStore();
   const [categories, setCategories] = useState<Category[]>([]);
   const [places, setPlaces] = useState<any[]>([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -245,18 +244,15 @@ export function Layout() {
   const isSubPage = location.pathname.split('/').length > 2;
   const navCategories = categories.slice(0, 5);
 
-  // Initialize theme on mount
-  useEffect(() => { initTheme(); }, [initTheme]);
-
   useEffect(() => {
     api.get('/categories').then(res => {
       const data = res.data;
       setCategories(Array.isArray(data) ? data : (data?.data ?? []));
-    }).catch(() => { });
+    }).catch(() => {});
     api.get('/places').then(res => {
       const data = res.data;
       setPlaces(Array.isArray(data) ? data : (data?.data ?? []));
-    }).catch(() => { });
+    }).catch(() => {});
   }, []);
 
   useEffect(() => { setDrawerOpen(false); }, [location.pathname]);
@@ -273,7 +269,7 @@ export function Layout() {
     <div className="relative min-h-screen bg-background font-sans">
 
       {/* ───── HEADER ───── */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border shadow-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm">
 
         {/* TOP BAR */}
         <div className="container mx-auto px-4 md:px-6 max-w-7xl h-[56px] md:h-[60px] flex items-center">
@@ -281,7 +277,7 @@ export function Layout() {
           {/* ── SECTION 1: Logo (left) ── */}
           <div className="flex items-center shrink-0 md:w-[180px]">
             {isSubPage && (
-              <button onClick={() => navigate(-1)} className="md:hidden p-1.5 -ml-1.5 mr-1 text-secondary dark:text-gray-300 active:scale-95 transition-transform">
+              <button onClick={() => navigate(-1)} className="md:hidden p-1.5 -ml-1.5 mr-1 text-secondary active:scale-95 transition-transform">
                 <ChevronLeft className="size-5" />
               </button>
             )}
@@ -296,7 +292,7 @@ export function Layout() {
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-gray-400 z-10" />
               <input
                 type="text"
-                className="w-full h-10 pl-10 pr-4 rounded-full bg-gray-50 dark:bg-gray-800 border border-border hover:border-gray-300 dark:hover:border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary/30 text-[13px] font-medium text-secondary dark:text-white outline-none transition-all placeholder:text-gray-400"
+                className="w-full h-10 pl-10 pr-4 rounded-full bg-gray-50 border border-gray-200 hover:border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary/30 text-[13px] font-medium text-secondary outline-none transition-all placeholder:text-gray-400"
                 placeholder={searchPlaceholders[searchPlaceholderIndex]}
                 onFocus={(e) => e.target.select()}
                 onKeyDown={(e) => {
@@ -310,7 +306,7 @@ export function Layout() {
               onChange={(e) => {
                 if (e.target.value !== 'all') navigate(`/directory?location=${encodeURIComponent(e.target.value)}`);
               }}
-              className="h-10 pl-3 pr-7 rounded-full bg-gray-50 dark:bg-gray-800 border border-border hover:border-gray-300 dark:hover:border-gray-700 text-[12px] font-bold text-secondary dark:text-white appearance-none cursor-pointer outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all w-[140px] shrink-0"
+              className="h-10 pl-3 pr-7 rounded-full bg-gray-50 border border-gray-200 hover:border-gray-300 text-[12px] font-bold text-secondary appearance-none cursor-pointer outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all w-[140px] shrink-0"
               defaultValue="all"
             >
               <option value="all">📍 All Areas</option>
@@ -327,8 +323,8 @@ export function Layout() {
           <div className="hidden md:flex items-center gap-3 shrink-0 md:w-[180px] justify-end">
             {user ? (
               <>
-                <NavLink to={user.role === 'pro' ? '/dashboard/pro' : '/dashboard/business'} className="flex items-center gap-2 text-[13px] font-semibold text-secondary dark:text-white hover:text-primary dark:hover:text-primary transition-colors shrink-0">
-                  <div className="size-8 min-w-[32px] shrink-0 rounded-full bg-primary/10 text-primary flex items-center justify-center font-black text-xs uppercase overflow-hidden border border-primary/20">
+                <NavLink to={user.role === 'pro' ? '/dashboard/pro' : '/dashboard/business'} className="flex items-center gap-2 text-[13px] font-semibold text-secondary hover:text-primary transition-colors">
+                  <div className="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-black text-xs uppercase overflow-hidden border border-primary/20">
                     {(user as any).avatar ? <img src={(user as any).avatar} className="w-full h-full object-cover" alt="avatar" /> : user.name[0]}
                   </div>
                 </NavLink>
@@ -339,7 +335,6 @@ export function Layout() {
                 <UserIcon className="size-4" />
               </button>
             )}
-            <ThemeToggle />
             <NavLink to="/for-businesses">
               <Button className="h-9 px-4 rounded-full bg-primary hover:bg-red-700 text-white text-[13px] font-bold shadow-sm shadow-primary/30 transition-all active:scale-95 gap-1.5">
                 <PlusCircle className="size-3.5" /> Add Listing
@@ -348,18 +343,21 @@ export function Layout() {
           </div>
 
           {/* Mobile: icon row */}
-          <div className="md:hidden flex items-center gap-1 shrink-0">
-            <ThemeToggle />
+          <div className="md:hidden flex items-center gap-0.5 shrink-0">
+            <button className="p-2 text-secondary/60 relative active:scale-90 transition-transform">
+              <Bell className="size-5" />
+              <span className="absolute top-1.5 right-1.5 size-1.5 bg-primary rounded-full" />
+            </button>
             {user ? (
-              <NavLink to={user.role === 'pro' ? '/dashboard/pro' : '/dashboard/business'} className="p-1 ml-0.5 shrink-0">
-                <div className="size-8 min-w-[32px] shrink-0 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-secondary/50 dark:text-gray-400 overflow-hidden border border-gray-200 dark:border-gray-700">
-                  <span className="text-xs font-black text-secondary dark:text-white uppercase">{user.name[0]}</span>
+              <NavLink to={user.role === 'pro' ? '/dashboard/pro' : '/dashboard/business'} className="p-1 ml-0.5">
+                <div className="size-8 rounded-full bg-gray-100 flex items-center justify-center text-secondary/50 overflow-hidden border border-gray-200">
+                  <span className="text-xs font-black text-secondary uppercase">{user.name[0]}</span>
                 </div>
               </NavLink>
             ) : (
-              <button onClick={() => setAuthModalOpen(true)} className="p-1 ml-0.5 outline-none focus:outline-none shrink-0">
-                <div className="size-8 min-w-[32px] shrink-0 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-secondary/50 dark:text-gray-400 overflow-hidden border border-gray-200 dark:border-gray-700">
-                  <UserIcon className="size-4 shrink-0" />
+              <button onClick={() => setAuthModalOpen(true)} className="p-1 ml-0.5 outline-none focus:outline-none">
+                <div className="size-8 rounded-full bg-gray-100 flex items-center justify-center text-secondary/50 overflow-hidden border border-gray-200">
+                  <UserIcon className="size-4" />
                 </div>
               </button>
             )}
@@ -368,7 +366,7 @@ export function Layout() {
 
         {/* CATEGORY NAV BAR — Desktop only */}
         {navCategories.length > 0 && (
-          <div className="hidden md:block border-t border-border bg-background">
+          <div className="hidden md:block border-t border-gray-100 bg-white">
             <div className="container mx-auto px-6 max-w-7xl flex items-center gap-8">
               {navCategories.map((cat) => (
                 <NavCategoryItem key={cat.id} cat={cat} />
@@ -385,7 +383,7 @@ export function Layout() {
       <AllCategoriesDrawer categories={categories} open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
       <main className={cn(
-        "bg-background min-h-screen",
+        "bg-white min-h-screen",
         navCategories.length > 0 ? "pt-[56px] md:pt-[104px]" : "pt-[56px] md:pt-[60px]"
       )}>
         <AnimatePresence mode="wait">

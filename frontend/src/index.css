@@ -67,25 +67,25 @@
   }
 
   .dark {
-    --background: oklch(0.13 0 0); /* Very dark gray */
-    --foreground: oklch(0.985 0 0); /* White text */
-    --card: oklch(0.16 0 0); /* Elevated card background */
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
     --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.16 0 0);
+    --popover: oklch(0.205 0 0);
     --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.58 0.23 29); /* Slightly brighter red for dark mode contrast */
-    --primary-foreground: oklch(0.985 0 0); /* White text on primary */
-    --secondary: oklch(0.22 0 0); /* Slightly lighter than card */
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.22 0 0);
-    --muted-foreground: oklch(0.708 0 0); /* Grayish text */
-    --accent: oklch(0.22 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
     --accent-foreground: oklch(0.985 0 0);
     --destructive: oklch(0.396 0.141 25.723);
     --destructive-foreground: oklch(0.985 0 0);
-    --border: oklch(0.22 0 0);
-    --input: oklch(0.22 0 0);
-    --ring: oklch(0.58 0.23 29); /* Match primary red */
+    --border: oklch(0.269 0 0);
+    --input: oklch(0.269 0 0);
+    --ring: oklch(0.439 0 0);
   }
 }
 
