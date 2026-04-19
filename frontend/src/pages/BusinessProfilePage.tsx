@@ -505,3 +505,5 @@ export function BusinessProfilePage() {
     </div>
   );
 }
+
+export default BusinessProfilePage;

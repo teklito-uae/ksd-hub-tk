@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\BusinessController;
 use App\Http\Controllers\Api\ProfessionalController;
 use App\Http\Controllers\Api\PlaceController;
+use App\Http\Controllers\Api\BlogController;
 
 Route::prefix('v1')->group(function () {
 
@@ -21,6 +22,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/businesses/{slug}',   [BusinessController::class,     'show']);
     Route::get('/professionals',       [ProfessionalController::class, 'index']);
     Route::get('/professionals/{slug}',[ProfessionalController::class, 'show']);
+    Route::get('/blog',                [BlogController::class,         'index']);
+    Route::get('/blog/{slug}',         [BlogController::class,         'show']);
 
     // ── Public write endpoints ────────────────────────────────────────────────
     Route::post('/inquiries', function (Request $request) {

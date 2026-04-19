@@ -141,3 +141,5 @@ export function BusinessDashboard() {
     </DashboardLayout>
   );
 }
+
+export default BusinessDashboard;

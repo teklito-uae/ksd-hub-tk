@@ -6,17 +6,17 @@ import ScrollToTop from '@/components/ScrollToTop';
 import { Skeleton } from '@/components/ui/skeleton';
 
 // ── Lazy-loaded Pages (Code Splitting) ──
-const LandingPage = lazy(() => import('@/pages/LandingPage').then(m => ({ default: m.LandingPage })));
-const ForBusinessesPage = lazy(() => import('@/pages/ForBusinessesPage').then(m => ({ default: m.ForBusinessesPage })));
-const DirectoryPage = lazy(() => import('@/pages/DirectoryPage').then(m => ({ default: m.DirectoryPage })));
-const BusinessProfilePage = lazy(() => import('@/pages/BusinessProfilePage').then(m => ({ default: m.BusinessProfilePage })));
-const ProsPage = lazy(() => import('@/pages/ProsPage').then(m => ({ default: m.ProsPage })));
-const ExpertProfilePage = lazy(() => import('@/pages/ExpertProfilePage').then(m => ({ default: m.ExpertProfilePage })));
-const SupportPage = lazy(() => import('@/pages/SupportPage').then(m => ({ default: m.SupportPage })));
-const BlogPage = lazy(() => import('@/pages/BlogPage').then(m => ({ default: m.BlogPage })));
-const BlogPostPage = lazy(() => import('@/pages/BlogPostPage').then(m => ({ default: m.BlogPostPage })));
-const BusinessDashboard = lazy(() => import('@/pages/dashboard/BusinessDashboard').then(m => ({ default: m.BusinessDashboard })));
-const ProDashboard = lazy(() => import('@/pages/dashboard/ProDashboard').then(m => ({ default: m.ProDashboard })));
+const LandingPage = lazy(() => import('@/pages/LandingPage'));
+const ForBusinessesPage = lazy(() => import('@/pages/ForBusinessesPage'));
+const DirectoryPage = lazy(() => import('@/pages/DirectoryPage'));
+const BusinessProfilePage = lazy(() => import('@/pages/BusinessProfilePage'));
+const ProsPage = lazy(() => import('@/pages/ProsPage'));
+const ExpertProfilePage = lazy(() => import('@/pages/ExpertProfilePage'));
+const SupportPage = lazy(() => import('@/pages/SupportPage'));
+const BlogPage = lazy(() => import('@/pages/BlogPage'));
+const BlogPostPage = lazy(() => import('@/pages/BlogPostPage'));
+const BusinessDashboard = lazy(() => import('@/pages/dashboard/BusinessDashboard'));
+const ProDashboard = lazy(() => import('@/pages/dashboard/ProDashboard'));
 
 // ── Page Loading Fallback ──
 function PageLoader() {

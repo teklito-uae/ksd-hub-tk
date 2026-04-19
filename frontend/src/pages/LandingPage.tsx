@@ -39,7 +39,10 @@ import {
   Wrench,
   HardHat,
   Banknote,
-  CalendarDays
+  CalendarDays,
+  Sparkles as SparklesIcon,
+  Calendar,
+  Clock
 } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -180,6 +183,7 @@ export function LandingPage() {
   const [categories, setCategories] = useState<any[]>(staticCategories);
   const [places, setPlaces] = useState<any[]>([]);
   const [pros, setPros] = useState<any[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Banner slider
@@ -195,16 +199,18 @@ export function LandingPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [bizRes, catRes, proRes, placesRes] = await Promise.all([
+        const [bizRes, catRes, proRes, placesRes, blogRes] = await Promise.all([
           api.get('/businesses'),
           api.get('/categories'),
           api.get('/professionals'),
-          api.get('/places')
+          api.get('/places'),
+          api.get('/blog', { params: { per_page: 4 } })
         ]);
         setBusinesses(bizRes.data);
         if (catRes.data.length > 0) setCategories(catRes.data);
         setPros(proRes.data);
         setPlaces(placesRes.data);
+        setBlogs(blogRes.data.data || []);
       } catch (err) {
         console.error('Failed to load landing page data:', err);
       } finally {
@@ -493,12 +499,72 @@ export function LandingPage() {
               <p className="text-gray-400 text-[11px] md:text-sm max-w-md mx-auto lg:mx-0 font-medium leading-relaxed">Join thousands of local businesses and professionals on the district's largest digital hub.</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 lg:justify-end">
-              <Button size="lg" className="bg-primary text-white font-black h-12 md:h-14 px-8 rounded-xl md:rounded-2xl text-xs md:text-sm">List Your Business</Button>
-              <Button size="lg" variant="outline" className="border-white/20 text-white h-12 md:h-14 px-8 rounded-xl md:rounded-2xl hover:bg-white/10 text-xs md:text-sm font-bold">Find Services</Button>
+              <Link to="/for-businesses">
+                <Button size="lg" className="bg-primary text-white font-black h-12 md:h-14 px-8 rounded-xl md:rounded-2xl text-xs md:text-sm w-full sm:w-auto">List Your Business</Button>
+              </Link>
+              <Link to="/directory">
+                <Button size="lg" variant="outline" className="border-white/20 text-white h-12 md:h-14 px-8 rounded-xl md:rounded-2xl hover:bg-white/10 text-xs md:text-sm font-bold w-full sm:w-auto">Find Services</Button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
+
+      {/* ───── 8.5 LATEST FROM BLOG ───── */}
+      {blogs.length > 0 && (
+        <section className="container mx-auto px-4 max-w-7xl mt-12 mb-16">
+          <div className="flex items-end justify-between mb-8">
+            <div className="space-y-1">
+              <h2 className="text-2xl md:text-3xl font-black text-secondary tracking-tight flex items-center gap-2">
+                <Sparkles className="size-6 text-primary" />
+                Latest from the Blog
+              </h2>
+              <p className="text-xs md:text-sm text-gray-500 font-medium ml-8">Guides, stories, and insights from Kasaragod.</p>
+            </div>
+            <Link to="/blog">
+              <Button variant="ghost" className="hidden md:flex gap-2 text-primary font-bold hover:bg-primary/5">
+                View All Posts <ArrowRight className="size-4" />
+              </Button>
+            </Link>
+          </div>
+
+          <div className="flex overflow-x-auto gap-4 md:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+            {blogs.map((post) => (
+              <div key={post.id} className="min-w-[280px] md:min-w-[340px] max-w-[340px] snap-start shrink-0">
+                <Link to={`/blog/${post.slug}`}>
+                  <Card className="group rounded-2xl overflow-hidden border-gray-100 dark:border-gray-800 hover:shadow-xl hover:border-primary/20 transition-all duration-300 h-full flex flex-col bg-white dark:bg-gray-900">
+                    <div className="relative h-48 overflow-hidden">
+                      <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                      <div className="absolute top-3 left-3">
+                        <Badge className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-secondary dark:text-white border-none text-[9px] font-bold gap-1 shadow-sm">
+                          {post.category}
+                        </Badge>
+                      </div>
+                    </div>
+                    <div className="p-5 flex-1 flex flex-col">
+                      <h3 className="text-base font-bold text-secondary dark:text-white leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {post.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground line-clamp-2 mb-4 flex-1">{post.excerpt}</p>
+                      <div className="flex items-center justify-between text-[10px] text-muted-foreground font-semibold">
+                        <span className="flex items-center gap-1"><Calendar className="size-3" /> {new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        <span className="flex items-center gap-1"><Clock className="size-3" /> {post.read_time}</span>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </div>
+            ))}
+          </div>
+          <div className="mt-2 text-center md:hidden">
+            <Link to="/blog">
+              <Button variant="outline" className="rounded-full font-bold text-xs gap-2">
+                View All Posts <ArrowRight className="size-3" />
+              </Button>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* ───── 9. MOST SEARCHED (SEO LINKS) ───── */}
       <section className="container mx-auto px-4 max-w-7xl mt-8 mb-10 border-t border-gray-100 pt-10">
@@ -607,3 +673,5 @@ export function LandingPage() {
     </div>
   );
 }
+
+export default LandingPage;

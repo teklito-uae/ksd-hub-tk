@@ -169,3 +169,5 @@ export function ProDashboard() {
     </DashboardLayout>
   );
 }
+
+export default ProDashboard;

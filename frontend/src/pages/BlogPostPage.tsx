@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { blogPosts } from './BlogPage';
+
 import { SEOHead } from '@/components/SEOHead';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,10 +11,44 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export function BlogPostPage() {
+import { useEffect, useState } from 'react';
+import api from '@/lib/axios';
+import * as Icons from 'lucide-react';
+
+export default function BlogPostPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const post = blogPosts.find(p => p.slug === slug);
+  const [post, setPost] = useState<any>(null);
+  const [morePosts, setMorePosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    api.get(`/blog/${slug}`)
+      .then(res => {
+        setPost(res.data.post);
+        setMorePosts(res.data.related);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-950 p-4 pt-20">
+        <div className="container mx-auto max-w-3xl">
+           <div className="h-[300px] w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-2xl mb-8" />
+           <div className="h-8 w-3/4 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg mb-4" />
+           <div className="h-4 w-1/4 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-md mb-8" />
+           <div className="space-y-4">
+             <div className="h-4 w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-md" />
+             <div className="h-4 w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-md" />
+             <div className="h-4 w-5/6 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-md" />
+           </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -25,11 +59,6 @@ export function BlogPostPage() {
       </div>
     );
   }
-
-  const relatedPosts = blogPosts.filter(p => p.id !== post.id && p.category === post.category).slice(0, 2);
-  const morePosts = relatedPosts.length < 2
-    ? [...relatedPosts, ...blogPosts.filter(p => p.id !== post.id && !relatedPosts.find(r => r.id === p.id)).slice(0, 2 - relatedPosts.length)]
-    : relatedPosts;
 
   const shareUrl = `https://kasaragodhub.com/blog/${post.slug}`;
 
@@ -102,7 +131,7 @@ export function BlogPostPage() {
     });
   };
 
-  const CatIcon = post.categoryIcon;
+  const CatIcon = (Icons as any)[post.category_icon || 'FileText'] || Icons.FileText;
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 pb-24 md:pb-12">
@@ -117,7 +146,7 @@ export function BlogPostPage() {
           description: post.excerpt,
           image: post.image,
           author: post.author,
-          publishedTime: post.date,
+          publishedTime: post.published_at,
         }}
       />
 
@@ -131,7 +160,7 @@ export function BlogPostPage() {
           onClick={() => navigate('/blog')}
           className="absolute top-4 left-4 md:top-6 md:left-8 z-20 size-10 rounded-xl bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
         >
-          <ChevronLeft className="size-5" />
+          <Icons.ChevronLeft className="size-5" />
         </button>
 
         {/* Share button */}
@@ -139,7 +168,7 @@ export function BlogPostPage() {
           onClick={() => navigator.clipboard?.writeText(shareUrl)}
           className="absolute top-4 right-4 md:top-6 md:right-8 z-20 size-10 rounded-xl bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
         >
-          <Share2 className="size-5" />
+          <Icons.Share2 className="size-5" />
         </button>
 
         {/* Title overlay */}
@@ -150,8 +179,8 @@ export function BlogPostPage() {
             </Badge>
             <h1 className="text-2xl md:text-4xl font-black text-white leading-tight mb-3">{post.title}</h1>
             <div className="flex items-center gap-4 text-white/60 text-xs font-semibold">
-              <span className="flex items-center gap-1"><Calendar className="size-3" /> {post.date}</span>
-              <span className="flex items-center gap-1"><Clock className="size-3" /> {post.readTime}</span>
+              <span className="flex items-center gap-1"><Icons.Calendar className="size-3" /> {new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+              <span className="flex items-center gap-1"><Icons.Clock className="size-3" /> {post.read_time}</span>
               <span>By {post.author}</span>
             </div>
           </div>
@@ -216,7 +245,7 @@ export function BlogPostPage() {
                 <div className="p-4">
                   <Badge variant="outline" className="text-[8px] font-bold mb-2 border-gray-200 dark:border-gray-700">{p.category}</Badge>
                   <h4 className="text-sm font-bold text-secondary dark:text-white leading-snug group-hover:text-primary transition-colors line-clamp-2">{p.title}</h4>
-                  <p className="text-[11px] text-muted-foreground mt-1.5">{p.readTime}</p>
+                  <p className="text-[11px] text-muted-foreground mt-1.5">{p.read_time}</p>
                 </div>
               </Card>
             </Link>

@@ -228,3 +228,5 @@ export function ProsPage() {
     </div>
   );
 }
+
+export default ProsPage;

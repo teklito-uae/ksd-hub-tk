@@ -338,3 +338,5 @@ export function ExpertProfilePage() {
     </div>
   );
 }
+
+export default ExpertProfilePage;

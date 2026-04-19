@@ -419,3 +419,5 @@ export function ForBusinessesPage() {
     </div>
   );
 }
+
+export default ForBusinessesPage;

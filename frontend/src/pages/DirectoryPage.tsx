@@ -371,3 +371,5 @@ export function DirectoryPage() {
     </div>
   );
 }
+
+export default DirectoryPage;
