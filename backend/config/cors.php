@@ -19,7 +19,13 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173'],
+    'allowed_origins' => [
+        'http://localhost:5173',
+        'https://kasaragodhub.com',
+        'https://www.kasaragodhub.com',
+        'https://kasaragodhub.ae',
+        'https://www.kasaragodhub.ae',
+    ],
 
     'allowed_origins_patterns' => [],
 
