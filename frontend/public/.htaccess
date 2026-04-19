@@ -2,13 +2,16 @@
   RewriteEngine On
   RewriteBase /
 
-  # Proxy /api requests to the backend folder
+  # 1. Proxy /api requests to the backend folder
   RewriteRule ^api/(.*)$ backend/public/index.php [L,QSA]
 
-  # Proxy /setup-db-secret to the backend folder
+  # 2. Proxy /setup-db-secret to the backend folder
   RewriteRule ^setup-db-secret(.*)$ backend/public/index.php [L,QSA]
 
-  # Standard React SPA Routing
+  # 3. Proxy /check-db to the backend folder
+  RewriteRule ^check-db(.*)$ backend/public/index.php [L,QSA]
+
+  # 4. Standard React SPA Routing
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

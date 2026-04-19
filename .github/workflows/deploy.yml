@@ -38,10 +38,15 @@ jobs:
       - name: Prepare Deployment Structure
         run: |
           mkdir -p deploy
-          # Move frontend build to root level of deploy folder
+          # 1. Copy Frontend Build (includes .htaccess from public folder)
           cp -r frontend/dist/* deploy/
-          # Copy the backend folder into the deploy folder
+          
+          # 2. Copy Backend
           cp -r backend deploy/
+          
+          # 3. CRITICAL: Remove .gitignore files from deploy folder 
+          # so that vendor/ and other dependencies ARE pushed to production branch
+          find deploy -name ".gitignore" -type f -delete
 
       - name: Deploy to Production Branch
         uses: JamesIves/github-pages-deploy-action@v4
@@ -49,3 +54,4 @@ jobs:
           branch: production
           folder: deploy
           clean: true
+          single-commit: true
