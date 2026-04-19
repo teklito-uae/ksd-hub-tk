@@ -5,6 +5,7 @@ import { CategorySheet } from './CategorySheet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HubBot } from './HubBot';
 import { AuthModal } from './AuthModal';
+import { ThemeToggle } from './ThemeToggle';
 
 import { Footer } from './Footer';
 import { useNavigate } from 'react-router-dom';
@@ -235,7 +236,7 @@ export function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { categorySheetOpen, searchOpen, setSearchOpen, authModalOpen, setAuthModalOpen } = useUIStore();
+  const { categorySheetOpen, searchOpen, setSearchOpen, authModalOpen, setAuthModalOpen, initTheme } = useUIStore();
   const [categories, setCategories] = useState<Category[]>([]);
   const [places, setPlaces] = useState<any[]>([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -243,6 +244,9 @@ export function Layout() {
 
   const isSubPage = location.pathname.split('/').length > 2;
   const navCategories = categories.slice(0, 5);
+
+  // Initialize theme on mount
+  useEffect(() => { initTheme(); }, [initTheme]);
 
   useEffect(() => {
     api.get('/categories').then(res => {
@@ -319,7 +323,7 @@ export function Layout() {
           {/* Mobile spacer */}
           <div className="flex-1 md:hidden" />
 
-          {/* ── SECTION 3: Auth + CTA (right, desktop) ── */}
+          {/* ── SECTION 3: Theme + Auth + CTA (right, desktop) ── */}
           <div className="hidden md:flex items-center gap-3 shrink-0 md:w-[180px] justify-end">
             {user ? (
               <>
@@ -335,6 +339,7 @@ export function Layout() {
                 <UserIcon className="size-4" />
               </button>
             )}
+            <ThemeToggle />
             <NavLink to="/for-businesses">
               <Button className="h-9 px-4 rounded-full bg-primary hover:bg-red-700 text-white text-[13px] font-bold shadow-sm shadow-primary/30 transition-all active:scale-95 gap-1.5">
                 <PlusCircle className="size-3.5" /> Add Listing

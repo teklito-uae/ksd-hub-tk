@@ -84,6 +84,7 @@ export function Footer() {
                 { label: 'Expert Professionals', href: '/experts' },
                 { label: 'Tourism & Heritage', href: '/directory/tourism' },
                 { label: 'List Your Business', href: '/for-businesses' },
+                { label: 'Blog & Guides', href: '/blog' },
                 { label: 'Real Estate Listings', href: '/directory/real-estate' },
               ].map(({ label, href }) => (
                 <li key={label}>

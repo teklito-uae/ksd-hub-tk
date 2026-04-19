@@ -26,6 +26,7 @@ import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { InquiryModal } from '@/components/InquiryModal';
 import { KGDMap } from '@/components/KGDMap';
+import { SEOHead } from '@/components/SEOHead';
 
 export function BusinessProfilePage() {
   const { slug } = useParams();
@@ -104,6 +105,26 @@ export function BusinessProfilePage() {
   return (
     <div className="bg-gray-50/50 min-h-screen pb-32 md:pb-20">
       {/* Gallery Section */}
+      <SEOHead
+        title={business.name}
+        description={business.description?.slice(0, 160)}
+        url={`/business/${business.slug}`}
+        image={business.logo_url}
+        type="business.business"
+        business={{
+          name: business.name,
+          description: business.description,
+          address: business.address,
+          phone: business.phone,
+          category: category?.name,
+          image: business.logo_url,
+          rating: business.rating,
+          reviewCount: business.review_count,
+          latitude: business.latitude,
+          longitude: business.longitude,
+          priceRange: business.price_range ? '₹'.repeat(business.price_range) : undefined,
+        }}
+      />
       <section className="relative h-[300px] md:h-[450px] w-full bg-secondary overflow-hidden">
         {/* Share Button (Mobile Only, Non-fixed) */}
         <button className="md:hidden absolute top-4 right-4 z-20 size-10 rounded-xl bg-black/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white active:scale-95 transition-transform">

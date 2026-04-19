@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { categories as staticCategories, stats, featuredSections, bucketLists } from '@/lib/dummy-data';
 import api from '@/lib/axios';
 import { Skeleton } from '@/components/ui/skeleton';
+import { SEOHead } from '@/components/SEOHead';
 import { CategoryList } from '@/components/CategoryList';
 import { BusinessCarousel } from '@/components/BusinessCarousel';
 import { Button } from '@/components/ui/button';
@@ -229,8 +230,8 @@ export function LandingPage() {
   }, []);
 
   return (
-    <div className="overflow-x-hidden min-h-screen bg-white font-sans selection:bg-primary/20 pb-[76px] md:pb-24">
-
+    <div className="overflow-x-hidden min-h-screen bg-white dark:bg-gray-950 font-sans selection:bg-primary/20 pb-[76px] md:pb-24">
+      <SEOHead />
       <div className="flex flex-col">
 
         {/* ───── HERO BENTO BANNER ───── */}
