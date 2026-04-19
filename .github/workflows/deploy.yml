@@ -69,9 +69,32 @@ jobs:
           MAIL_PASSWORD=">vX8]RH/7vF"
           MAIL_ENCRYPTION=ssl
           EOF
+
+          # 4. Create Root .htaccess inside deploy folder
+          cat <<EOF > deploy/.htaccess
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+
+            # Proxy /api requests to the backend folder
+            RewriteRule ^api/(.*)$ backend/public/index.php [L,QSA]
+
+            # Proxy /setup-db-secret to the backend folder
+            RewriteRule ^setup-db-secret(.*)$ backend/public/index.php [L,QSA]
+
+            # Proxy /check-db to the backend folder
+            RewriteRule ^check-db(.*)$ backend/public/index.php [L,QSA]
+
+            # Standard React SPA Routing
+            RewriteRule ^index\.html$ - [L]
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule . /index.html [L]
+          </IfModule>
+          EOF
           
-          # 4. CRITICAL: Remove .gitignore files from deploy folder 
-          # so that vendor/ and .env ARE pushed to production branch
+          # 5. CRITICAL: Remove .gitignore files from deploy folder 
+          # so that vendor/, .env, and .htaccess ARE pushed to production branch
           find deploy -name ".gitignore" -type f -delete
 
       - name: Deploy to Production Branch
