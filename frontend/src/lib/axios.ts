@@ -3,11 +3,8 @@ import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 const getBaseURL = () => {
   if (import.meta.env.VITE_API_BASE_URL) return import.meta.env.VITE_API_BASE_URL;
   if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
-    // Detect production environment and point to api. subdomain
-    const hostname = window.location.hostname;
-    // If we're on www.kasaragodhub.com or kasaragodhub.com, point to api.kasaragodhub.com
-    const baseDomain = hostname.replace('www.', '');
-    return `https://api.${baseDomain}/api/v1`;
+    // Detect production environment and point to the main domain /api/v1
+    return 'https://kasaragodhub.com/api/v1';
   }
   return 'http://localhost:8000/api/v1';
 };
