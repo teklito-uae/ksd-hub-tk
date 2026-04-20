@@ -87,7 +87,8 @@ jobs:
           printf '  RewriteRule . /index.html [L]\n' >> deploy/.htaccess
           printf '</IfModule>\n' >> deploy/.htaccess
           
-          # 5. Fix permissions for Hostinger
+          # 5. Fix permissions and create missing folders for Hostinger
+          mkdir -p deploy/backend/storage/framework/{sessions,views,cache}
           chmod -R 775 deploy/backend/storage
           chmod -R 775 deploy/backend/bootstrap/cache
 
