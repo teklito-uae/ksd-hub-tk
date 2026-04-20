@@ -19,6 +19,14 @@ const BusinessDashboard = lazy(() => import('@/pages/dashboard/BusinessDashboard
 const ProDashboard = lazy(() => import('@/pages/dashboard/ProDashboard'));
 const AdminLogin = lazy(() => import('@/pages/admin/AdminLogin'));
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'));
+const UserManagement = lazy(() => import('@/pages/admin/UserManagement'));
+const AdminTraffic = lazy(() => import('@/pages/admin/AdminTraffic'));
+const ListingApproval = lazy(() => import('@/pages/admin/ListingApproval'));
+const InquiryManagement = lazy(() => import('@/pages/admin/InquiryManagement'));
+const BlogManagement = lazy(() => import('@/pages/admin/BlogManagement'));
+const SystemSettings = lazy(() => import('@/pages/admin/SystemSettings'));
+
+import { AdminLayout } from '@/components/admin/AdminLayout';
 
 // ── Page Loading Fallback ──
 function PageLoader() {
@@ -62,7 +70,17 @@ function App() {
         
         {/* Super Admin Portal */}
         <Route path="/admin/login" element={<Suspense fallback={<PageLoader />}><AdminLogin /></Suspense>} />
-        <Route path="/admin/dashboard" element={<Suspense fallback={<PageLoader />}><AdminDashboard /></Suspense>} />
+        
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/dashboard" element={<Suspense fallback={<PageLoader />}><AdminDashboard /></Suspense>} />
+          <Route path="/admin/users" element={<Suspense fallback={<PageLoader />}><UserManagement /></Suspense>} />
+          <Route path="/admin/traffic" element={<Suspense fallback={<PageLoader />}><AdminTraffic /></Suspense>} />
+          <Route path="/admin/businesses" element={<Suspense fallback={<PageLoader />}><ListingApproval /></Suspense>} />
+          <Route path="/admin/pros" element={<Suspense fallback={<PageLoader />}><ListingApproval /></Suspense>} />
+          <Route path="/admin/leads" element={<Suspense fallback={<PageLoader />}><InquiryManagement /></Suspense>} />
+          <Route path="/admin/blog" element={<Suspense fallback={<PageLoader />}><BlogManagement /></Suspense>} />
+          <Route path="/admin/settings" element={<Suspense fallback={<PageLoader />}><SystemSettings /></Suspense>} />
+        </Route>
       </Routes>
 
       <Toaster />

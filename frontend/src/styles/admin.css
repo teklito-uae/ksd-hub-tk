@@ -1,0 +1,57 @@
+/* Admin Specific Theme Tokens */
+.admin-portal {
+  --admin-bg: #09090b; /* zinc-950 */
+  --admin-card: #18181b; /* zinc-900 */
+  --admin-border: #27272a; /* zinc-800 */
+  --admin-text: #fafafa; /* zinc-50 */
+  --admin-muted: #71717a; /* zinc-500 */
+  --admin-accent: #C8102E; /* Primary Red */
+  
+  transition: background-color 0.5s ease, color 0.5s ease;
+  min-height: 100vh;
+  background-color: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+.admin-portal.light {
+  --admin-bg: #fafafa; /* zinc-50 */
+  --admin-card: #ffffff; /* white */
+  --admin-border: #e4e4e7; /* zinc-200 */
+  --admin-text: #09090b; /* zinc-950 */
+  --admin-muted: #71717a; /* zinc-500 */
+}
+
+/* Scoped Overrides */
+.admin-portal .admin-card {
+  background-color: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  border-radius: 1rem; /* rounded-2xl */
+}
+
+.admin-portal .admin-table-header {
+  background-color: color-mix(in srgb, var(--admin-card), transparent 20%);
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-portal .admin-input {
+  background-color: color-mix(in srgb, var(--admin-bg), transparent 50%);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text);
+}
+
+.admin-portal .admin-btn-outline {
+  background-color: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text);
+}
+
+.admin-portal .admin-btn-outline:hover {
+  background-color: var(--admin-border);
+}
+
+/* Glassmorphism for Admin */
+.admin-portal .admin-glass {
+  background-color: color-mix(in srgb, var(--admin-card), transparent 40%);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--admin-border);
+}

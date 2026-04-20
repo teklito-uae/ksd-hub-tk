@@ -68,6 +68,7 @@ jobs:
           printf 'MAIL_ENCRYPTION=ssl\n' >> deploy/backend/.env
           printf 'MAIL_FROM_ADDRESS="no-reply@kasaragodhub.com"\n' >> deploy/backend/.env
           printf 'MAIL_FROM_NAME="Kasaragod Hub"\n' >> deploy/backend/.env
+          printf 'DB_MIGRATE_SECRET=ksd_hub_master_reset_9921\n' >> deploy/backend/.env
 
           # 4. Create Root .htaccess
           printf '<IfModule mod_rewrite.c>\n' > deploy/.htaccess

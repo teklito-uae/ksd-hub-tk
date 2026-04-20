@@ -11,7 +11,8 @@ return new class extends Migration
         if (Schema::hasTable('inquiries')) return;
         Schema::create('inquiries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('business_id')->constrained()->onDelete('cascade');
+            $table->foreignId('business_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('professional_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('customer_name', 100);
             $table->string('customer_phone', 20);
             $table->string('project_type')->nullable();
